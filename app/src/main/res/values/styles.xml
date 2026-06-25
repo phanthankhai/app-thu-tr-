@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextAppearance.SmartRent.Display" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/sr_text_primary</item>
+        <item name="android:textSize">@dimen/text_display</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.SmartRent.H1" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/sr_text_primary</item>
+        <item name="android:textSize">@dimen/text_h1</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.SmartRent.H2" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/sr_text_primary</item>
+        <item name="android:textSize">@dimen/text_h2</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.SmartRent.H3" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/sr_text_primary</item>
+        <item name="android:textSize">@dimen/text_h3</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.SmartRent.TitleLarge" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/sr_text_primary</item>
+        <item name="android:textSize">@dimen/text_2xl</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.SmartRent.TitleMedium" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/sr_text_primary</item>
+        <item name="android:textSize">@dimen/text_xl</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.SmartRent.SectionTitle" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/sr_text_primary</item>
+        <item name="android:textSize">@dimen/text_lg</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.SmartRent.Body" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/sr_text_primary</item>
+        <item name="android:textSize">@dimen/text_md</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.SmartRent.BodySecondary" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/sr_text_secondary</item>
+        <item name="android:textSize">@dimen/text_sm</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.SmartRent.BodySmall" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/sr_text_secondary</item>
+        <item name="android:textSize">@dimen/text_body_small</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.SmartRent.Label" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/sr_text_secondary</item>
+        <item name="android:textSize">@dimen/text_label</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.SmartRent.Money" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/sr_text_primary</item>
+        <item name="android:textSize">@dimen/text_money</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.SmartRent.Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/sr_text_muted</item>
+        <item name="android:textSize">@dimen/text_xs</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.SmartRent.BottomNavigation.Active" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/sr_primary</item>
+        <item name="android:textSize">@dimen/text_caption</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.SmartRent.BottomNavigation.Inactive" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/sr_text_muted</item>
+        <item name="android:textSize">@dimen/text_caption</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="Widget.SmartRent.Button.Primary" parent="Widget.MaterialComponents.Button">
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/sr_button_on_primary</item>
+        <item name="backgroundTint">@color/sr_button_primary_background</item>
+        <item name="cornerRadius">@dimen/radius_button</item>
+        <item name="iconTint">@color/sr_button_on_primary</item>
+        <item name="rippleColor">@color/sr_primary_light</item>
+    </style>
+
+    <style name="Widget.SmartRent.Button.Secondary" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/sr_button_secondary_content</item>
+        <item name="backgroundTint">@color/sr_button_secondary_background</item>
+        <item name="cornerRadius">@dimen/radius_button</item>
+        <item name="iconTint">@color/sr_button_secondary_content</item>
+        <item name="rippleColor">@color/sr_primary_light</item>
+        <item name="strokeColor">@color/sr_border</item>
+        <item name="strokeWidth">@dimen/stroke_thin</item>
+    </style>
+
+    <style name="Widget.SmartRent.Button.Text" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/sr_text_button_content</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="iconTint">@color/sr_text_button_content</item>
+        <item name="rippleColor">@color/sr_primary_light</item>
+    </style>
+
+    <style name="Widget.SmartRent.Button.Danger" parent="Widget.MaterialComponents.Button">
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/sr_button_on_primary</item>
+        <item name="backgroundTint">@color/sr_button_danger_background</item>
+        <item name="cornerRadius">@dimen/radius_button</item>
+        <item name="iconTint">@color/sr_button_on_primary</item>
+        <item name="rippleColor">@color/sr_error_container</item>
+    </style>
+
+    <style name="Widget.SmartRent.Button.Loading" parent="Widget.SmartRent.Button.Primary">
+        <item name="android:minWidth">96dp</item>
+    </style>
+
+    <style name="Widget.SmartRent.IconButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:minWidth">@dimen/icon_button_size</item>
+        <item name="android:minHeight">@dimen/icon_button_size</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="cornerRadius">@dimen/radius_full</item>
+        <item name="iconTint">@color/sr_text_secondary</item>
+        <item name="rippleColor">@color/sr_primary_light</item>
+    </style>
+
+    <style name="Widget.SmartRent.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="android:minWidth">@dimen/fab_size</item>
+        <item name="android:minHeight">@dimen/fab_size</item>
+        <item name="backgroundTint">@color/sr_primary</item>
+        <item name="elevation">@dimen/elevation_raised</item>
+        <item name="rippleColor">@color/sr_primary_dark</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.SmartRent.Fab</item>
+        <item name="tint">@color/white</item>
+    </style>
+
+    <style name="Widget.SmartRent.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/sr_surface</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius_input</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius_input</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius_input</item>
+        <item name="boxCornerRadiusTopStart">@dimen/radius_input</item>
+        <item name="boxStrokeColor">@color/sr_text_input_box_stroke</item>
+        <item name="boxStrokeErrorColor">@color/sr_error</item>
+        <item name="errorTextColor">@color/sr_error</item>
+        <item name="helperTextTextColor">@color/sr_text_secondary</item>
+        <item name="hintTextColor">@color/sr_text_secondary</item>
+    </style>
+
+    <style name="Widget.SmartRent.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:minHeight">@dimen/input_height</item>
+        <item name="android:textColor">@color/sr_text_primary</item>
+        <item name="android:textColorHint">@color/sr_text_muted</item>
+        <item name="android:textSize">@dimen/text_md</item>
+    </style>
+
+    <style name="Widget.SmartRent.TextInputLayout.Search" parent="Widget.SmartRent.TextInputLayout">
+        <item name="boxBackgroundColor">@color/sr_surface</item>
+        <item name="startIconTint">@color/sr_text_muted</item>
+    </style>
+
+    <style name="Widget.SmartRent.TextInputEditText.Money" parent="Widget.SmartRent.TextInputEditText">
+        <item name="android:gravity">end|center_vertical</item>
+        <item name="android:textAppearance">@style/TextAppearance.SmartRent.Money</item>
+    </style>
+
+    <style name="Widget.SmartRent.Card" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/sr_surface</item>
+        <item name="cardCornerRadius">@dimen/radius_card</item>
+        <item name="cardElevation">@dimen/elevation_card</item>
+        <item name="rippleColor">@color/sr_primary_light</item>
+        <item name="strokeColor">@color/sr_border</item>
+        <item name="strokeWidth">@dimen/stroke_thin</item>
+    </style>
+
+    <style name="Widget.SmartRent.Card.Elevated" parent="Widget.SmartRent.Card">
+        <item name="cardElevation">@dimen/elevation_raised</item>
+    </style>
+
+    <style name="Widget.SmartRent.Card.Compact" parent="Widget.SmartRent.Card">
+        <item name="android:minHeight">@dimen/card_min_height</item>
+        <item name="contentPadding">@dimen/card_padding_compact</item>
+    </style>
+
+    <style name="Widget.SmartRent.Card.Clickable" parent="Widget.SmartRent.Card">
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:minHeight">@dimen/list_item_min_height</item>
+    </style>
+
+    <style name="Widget.SmartRent.Card.State" parent="Widget.SmartRent.Card.Compact">
+        <item name="contentPadding">@dimen/card_padding</item>
+    </style>
+
+    <style name="Widget.SmartRent.Card.Loading" parent="Widget.SmartRent.Card.Compact">
+        <item name="cardBackgroundColor">@color/sr_surface</item>
+    </style>
+
+    <style name="Widget.SmartRent.StatusChip" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="android:textAppearance">@style/TextAppearance.SmartRent.Label</item>
+        <item name="android:textColor">@color/sr_status_chip_text</item>
+        <item name="chipBackgroundColor">@color/sr_status_chip_background</item>
+        <item name="chipCornerRadius">@dimen/radius_chip</item>
+        <item name="chipMinHeight">@dimen/chip_min_height</item>
+        <item name="chipStrokeWidth">0dp</item>
+        <item name="ensureMinTouchTargetSize">true</item>
+    </style>
+
+    <style name="Widget.SmartRent.StatusChip.Success" parent="Widget.SmartRent.StatusChip">
+        <item name="android:textColor">@color/sr_success_text</item>
+        <item name="chipBackgroundColor">@color/sr_success_container</item>
+    </style>
+
+    <style name="Widget.SmartRent.StatusChip.Warning" parent="Widget.SmartRent.StatusChip">
+        <item name="android:textColor">@color/sr_warning_text</item>
+        <item name="chipBackgroundColor">@color/sr_warning_container</item>
+    </style>
+
+    <style name="Widget.SmartRent.StatusChip.Error" parent="Widget.SmartRent.StatusChip">
+        <item name="android:textColor">@color/sr_error_text</item>
+        <item name="chipBackgroundColor">@color/sr_error_container</item>
+    </style>
+
+    <style name="Widget.SmartRent.StatusChip.Info" parent="Widget.SmartRent.StatusChip">
+        <item name="android:textColor">@color/sr_info_text</item>
+        <item name="chipBackgroundColor">@color/sr_info_container</item>
+    </style>
+
+    <style name="Widget.SmartRent.StatusChip.Vacant" parent="Widget.SmartRent.StatusChip">
+        <item name="android:textColor">@color/sr_vacant_text</item>
+        <item name="chipBackgroundColor">@color/sr_vacant_container</item>
+    </style>
+
+    <style name="Widget.SmartRent.FilterChip" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="android:textAppearance">@style/TextAppearance.SmartRent.Label</item>
+        <item name="android:textColor">@color/sr_filter_chip_content</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="chipBackgroundColor">@color/sr_filter_chip_background</item>
+        <item name="chipCornerRadius">@dimen/radius_chip</item>
+        <item name="chipMinHeight">@dimen/filter_chip_min_height</item>
+        <item name="chipStrokeColor">@color/sr_border</item>
+        <item name="chipStrokeWidth">@dimen/stroke_thin</item>
+        <item name="ensureMinTouchTargetSize">true</item>
+    </style>
+
+    <style name="Widget.SmartRent.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:minHeight">@dimen/toolbar_height</item>
+        <item name="android:background">@color/sr_surface</item>
+        <item name="navigationIconTint">@color/sr_text_primary</item>
+        <item name="subtitleTextColor">@color/sr_text_secondary</item>
+        <item name="titleTextColor">@color/sr_text_primary</item>
+    </style>
+
+    <style name="Widget.SmartRent.BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">@color/sr_surface</item>
+        <item name="android:minHeight">@dimen/bottom_nav_height</item>
+        <item name="elevation">@dimen/elevation_nav</item>
+        <item name="itemHorizontalTranslationEnabled">false</item>
+        <item name="itemIconSize">@dimen/bottom_nav_icon_size</item>
+        <item name="itemIconTint">@color/bottom_nav_item_color</item>
+        <item name="itemPaddingBottom">@dimen/bottom_nav_item_padding_bottom</item>
+        <item name="itemPaddingTop">@dimen/bottom_nav_item_padding_top</item>
+        <item name="itemRippleColor">@color/sr_primary_light</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.SmartRent.BottomNavigation.Active</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.SmartRent.BottomNavigation.Inactive</item>
+        <item name="itemTextColor">@color/bottom_nav_item_color</item>
+        <item name="labelVisibilityMode">labeled</item>
+    </style>
+
+    <style name="Widget.SmartRent.LoadingIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
+        <item name="indicatorColor">@color/sr_primary</item>
+        <item name="indicatorSize">@dimen/loading_indicator_size</item>
+        <item name="trackColor">@color/sr_disabled_container</item>
+        <item name="trackThickness">@dimen/stroke_thin</item>
+    </style>
+
+    <style name="Widget.SmartRent.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet</item>
+        <item name="android:elevation">@dimen/elevation_sheet</item>
+        <item name="backgroundTint">@color/sr_surface</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.SmartRent.BottomSheet</item>
+    </style>
+
+    <style name="ShapeAppearance.SmartRent.Button" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_button</item>
+    </style>
+
+    <style name="ShapeAppearance.SmartRent.Input" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_input</item>
+    </style>
+
+    <style name="ShapeAppearance.SmartRent.Card" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_card</item>
+    </style>
+
+    <style name="ShapeAppearance.SmartRent.Fab" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_full</item>
+    </style>
+
+    <style name="ShapeAppearance.SmartRent.BottomSheet" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">@dimen/radius_bottom_sheet</item>
+        <item name="cornerSizeTopRight">@dimen/radius_bottom_sheet</item>
+    </style>
+</resources>

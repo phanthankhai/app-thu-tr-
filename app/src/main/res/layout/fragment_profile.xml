@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:paddingBottom="@dimen/main_content_bottom_padding">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/screen_padding_horizontal"
+        android:paddingTop="@dimen/screen_padding_vertical"
+        android:paddingEnd="@dimen/screen_padding_horizontal"
+        android:paddingBottom="@dimen/screen_padding_bottom">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_profile"
+            android:textAppearance="@style/TextAppearance.SmartRent.TitleLarge" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:text="@string/profile_subtitle"
+            android:textAppearance="@style/TextAppearance.SmartRent.BodySecondary" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.SmartRent.Card.Elevated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_lg"
+            app:contentPadding="@dimen/card_padding">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/avatar_size_lg"
+                    android:layout_height="@dimen/avatar_size_lg"
+                    android:background="@color/sr_info_container"
+                    android:gravity="center"
+                    android:text="@string/profile_avatar_initials"
+                    android:textAppearance="@style/TextAppearance.SmartRent.TitleMedium"
+                    android:textColor="@color/sr_primary" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_lg"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_user_name"
+                        android:textAppearance="@style/TextAppearance.SmartRent.TitleMedium" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.SmartRent.StatusChip.Info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/component_gap"
+                        android:text="@string/profile_user_role" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/component_gap"
+                        android:text="@string/profile_contact"
+                        android:textAppearance="@style/TextAppearance.SmartRent.BodySecondary" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/editProfileButton"
+            style="@style/Widget.SmartRent.Button.Secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/form_field_gap"
+            android:enabled="false"
+            android:text="@string/profile_edit_action" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/section_spacing"
+            android:text="@string/profile_summary_title"
+            android:textAppearance="@style/TextAppearance.SmartRent.SectionTitle" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/form_field_gap"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.SmartRent.Card.State"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/component_gap"
+                android:layout_weight="1"
+                app:contentPadding="@dimen/card_padding_compact">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_summary_spaces"
+                        android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:text="@string/profile_summary_spaces_value"
+                        android:textAppearance="@style/TextAppearance.SmartRent.TitleMedium" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.SmartRent.Card.State"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:contentPadding="@dimen/card_padding_compact">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_summary_rooms"
+                        android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:text="@string/profile_summary_rooms_value"
+                        android:textAppearance="@style/TextAppearance.SmartRent.TitleMedium" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/component_gap"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.SmartRent.Card.State"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/component_gap"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/sr_success_container"
+                app:contentPadding="@dimen/card_padding_compact"
+                app:strokeColor="@color/sr_success_container">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_summary_tenants"
+                        android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:text="@string/profile_summary_tenants_value"
+                        android:textAppearance="@style/TextAppearance.SmartRent.TitleMedium"
+                        android:textColor="@color/sr_success_text" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.SmartRent.Card.State"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/sr_warning_container"
+                app:contentPadding="@dimen/card_padding_compact"
+                app:strokeColor="@color/sr_warning_container">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_summary_bills"
+                        android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:text="@string/profile_summary_bills_value"
+                        android:textAppearance="@style/TextAppearance.SmartRent.TitleMedium"
+                        android:textColor="@color/sr_warning_text" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/section_spacing"
+            android:text="@string/profile_menu_title"
+            android:textAppearance="@style/TextAppearance.SmartRent.SectionTitle" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.SmartRent.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/form_field_gap"
+            app:contentPadding="@dimen/card_padding">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/accountMenuItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/space_3"
+                    android:paddingBottom="@dimen/space_3">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_menu_account"
+                        android:textAppearance="@style/TextAppearance.SmartRent.Body" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_1"
+                        android:lineSpacingExtra="@dimen/space_1"
+                        android:text="@string/profile_menu_account_note"
+                        android:textAppearance="@style/TextAppearance.SmartRent.BodySmall" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/stroke_thin"
+                    android:background="@color/sr_divider" />
+
+                <LinearLayout
+                    android:id="@+id/settingsMenuItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/space_3"
+                    android:paddingBottom="@dimen/space_3">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_menu_settings"
+                        android:textAppearance="@style/TextAppearance.SmartRent.Body"
+                        android:textColor="@color/sr_primary" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_1"
+                        android:lineSpacingExtra="@dimen/space_1"
+                        android:text="@string/profile_menu_settings_note"
+                        android:textAppearance="@style/TextAppearance.SmartRent.BodySmall" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/stroke_thin"
+                    android:background="@color/sr_divider" />
+
+                <LinearLayout
+                    android:id="@+id/notificationsMenuItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/space_3"
+                    android:paddingBottom="@dimen/space_3">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_menu_notifications"
+                        android:textAppearance="@style/TextAppearance.SmartRent.Body"
+                        android:textColor="@color/sr_primary" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_1"
+                        android:lineSpacingExtra="@dimen/space_1"
+                        android:text="@string/profile_menu_notifications_note"
+                        android:textAppearance="@style/TextAppearance.SmartRent.BodySmall" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/stroke_thin"
+                    android:background="@color/sr_divider" />
+
+                <LinearLayout
+                    android:id="@+id/helpMenuItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/space_3"
+                    android:paddingBottom="@dimen/space_3">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_menu_help"
+                        android:textAppearance="@style/TextAppearance.SmartRent.BodySecondary" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_1"
+                        android:lineSpacingExtra="@dimen/space_1"
+                        android:text="@string/profile_menu_help_note"
+                        android:textAppearance="@style/TextAppearance.SmartRent.BodySmall" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/stroke_thin"
+                    android:background="@color/sr_divider" />
+
+                <LinearLayout
+                    android:id="@+id/policyMenuItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/space_3"
+                    android:paddingBottom="@dimen/space_3">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_menu_policy"
+                        android:textAppearance="@style/TextAppearance.SmartRent.BodySecondary" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_1"
+                        android:lineSpacingExtra="@dimen/space_1"
+                        android:text="@string/profile_menu_policy_note"
+                        android:textAppearance="@style/TextAppearance.SmartRent.BodySmall" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.SmartRent.Card.State"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_lg"
+            app:cardBackgroundColor="@color/sr_neutral_container"
+            app:contentPadding="@dimen/card_padding"
+            app:strokeColor="@color/sr_neutral_container">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_app_info_title"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Body" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_xs"
+                    android:text="@string/profile_app_info_body"
+                    android:textAppearance="@style/TextAppearance.SmartRent.BodySecondary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/component_gap"
+                    android:text="@string/profile_app_version"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/logoutButton"
+            style="@style/Widget.SmartRent.Button.Secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_lg"
+            android:enabled="false"
+            android:text="@string/profile_logout_action"
+            android:textColor="@color/sr_error" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/component_gap"
+            android:text="@string/profile_logout_note"
+            android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

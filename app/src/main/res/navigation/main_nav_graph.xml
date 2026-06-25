@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/authFragment"
+        android:name="com.example.rent.presentation.auth.AuthFragment"
+        android:label="@string/title_auth" />
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.rent.presentation.auth.LoginFragment"
+        android:label="@string/title_login">
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_login_to_forgot_password"
+            app:destination="@id/forgotPasswordFragment" />
+        <action
+            android:id="@+id/action_login_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.rent.presentation.auth.RegisterFragment"
+        android:label="@string/title_register">
+        <action
+            android:id="@+id/action_register_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.example.rent.presentation.auth.ForgotPasswordFragment"
+        android:label="@string/title_forgot_password">
+        <action
+            android:id="@+id/action_forgot_password_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.rent.presentation.home.HomeFragment"
+        android:label="@string/title_home">
+        <action
+            android:id="@+id/action_home_to_rooms"
+            app:destination="@id/roomsFragment" />
+        <action
+            android:id="@+id/action_home_to_tenants"
+            app:destination="@id/tenantsFragment" />
+        <action
+            android:id="@+id/action_home_to_bills"
+            app:destination="@id/billsFragment" />
+        <action
+            android:id="@+id/action_home_to_notifications"
+            app:destination="@id/notificationsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/roomsFragment"
+        android:name="com.example.rent.presentation.rooms.RoomsFragment"
+        android:label="@string/title_rooms">
+        <action
+            android:id="@+id/action_rooms_to_room_detail"
+            app:destination="@id/roomDetailFragment" />
+        <action
+            android:id="@+id/action_rooms_to_add_room"
+            app:destination="@id/addEditRoomFragment">
+            <argument
+                android:name="formMode"
+                android:defaultValue="add"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/roomDetailFragment"
+        android:name="com.example.rent.presentation.rooms.RoomDetailFragment"
+        android:label="@string/title_room_detail">
+        <action
+            android:id="@+id/action_room_detail_to_edit_room"
+            app:destination="@id/addEditRoomFragment">
+            <argument
+                android:name="formMode"
+                android:defaultValue="edit"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_room_detail_to_tenants"
+            app:destination="@id/tenantsFragment" />
+        <action
+            android:id="@+id/action_room_detail_to_bills"
+            app:destination="@id/billsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addEditRoomFragment"
+        android:name="com.example.rent.presentation.rooms.AddEditRoomFragment"
+        android:label="@string/room_add_title">
+        <argument
+            android:name="formMode"
+            android:defaultValue="add"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/tenantsFragment"
+        android:name="com.example.rent.presentation.tenants.TenantsFragment"
+        android:label="@string/title_tenants">
+        <action
+            android:id="@+id/action_tenants_to_tenant_detail"
+            app:destination="@id/tenantDetailFragment" />
+        <action
+            android:id="@+id/action_tenants_to_add_tenant"
+            app:destination="@id/addEditTenantFragment">
+            <argument
+                android:name="formMode"
+                android:defaultValue="add"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/tenantDetailFragment"
+        android:name="com.example.rent.presentation.tenants.TenantDetailFragment"
+        android:label="@string/title_tenant_detail">
+        <action
+            android:id="@+id/action_tenant_detail_to_edit_tenant"
+            app:destination="@id/addEditTenantFragment">
+            <argument
+                android:name="formMode"
+                android:defaultValue="edit"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_tenant_detail_to_room_detail"
+            app:destination="@id/roomDetailFragment" />
+        <action
+            android:id="@+id/action_tenant_detail_to_bills"
+            app:destination="@id/billsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addEditTenantFragment"
+        android:name="com.example.rent.presentation.tenants.AddEditTenantFragment"
+        android:label="@string/tenant_add_title">
+        <argument
+            android:name="formMode"
+            android:defaultValue="add"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/billsFragment"
+        android:name="com.example.rent.presentation.bills.BillsFragment"
+        android:label="@string/title_bills">
+        <action
+            android:id="@+id/action_bills_to_bill_detail"
+            app:destination="@id/billDetailFragment" />
+        <action
+            android:id="@+id/action_bills_to_create_bill"
+            app:destination="@id/addEditBillFragment">
+            <argument
+                android:name="formMode"
+                android:defaultValue="add"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/billDetailFragment"
+        android:name="com.example.rent.presentation.bills.BillDetailFragment"
+        android:label="@string/title_bill_detail">
+        <action
+            android:id="@+id/action_bill_detail_to_edit_bill"
+            app:destination="@id/addEditBillFragment">
+            <argument
+                android:name="formMode"
+                android:defaultValue="edit"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_bill_detail_to_meter_reading"
+            app:destination="@id/meterReadingFragment" />
+        <action
+            android:id="@+id/action_bill_detail_to_payment_record"
+            app:destination="@id/paymentRecordFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addEditBillFragment"
+        android:name="com.example.rent.presentation.bills.AddEditBillFragment"
+        android:label="@string/bill_create_title">
+        <argument
+            android:name="formMode"
+            android:defaultValue="add"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/meterReadingFragment"
+        android:name="com.example.rent.presentation.bills.MeterReadingFragment"
+        android:label="@string/meter_reading_title" />
+
+    <fragment
+        android:id="@+id/paymentRecordFragment"
+        android:name="com.example.rent.presentation.bills.PaymentRecordFragment"
+        android:label="@string/payment_record_title" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.rent.presentation.profile.ProfileFragment"
+        android:label="@string/title_profile">
+        <action
+            android:id="@+id/action_profile_to_settings"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_profile_to_notifications"
+            app:destination="@id/notificationsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.rent.presentation.settings.SettingsFragment"
+        android:label="@string/title_settings" />
+
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.example.rent.presentation.notifications.NotificationsFragment"
+        android:label="@string/title_notifications">
+        <action
+            android:id="@+id/action_notifications_to_notification_detail"
+            app:destination="@id/notificationDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/notificationDetailFragment"
+        android:name="com.example.rent.presentation.notifications.NotificationDetailFragment"
+        android:label="@string/title_notification_detail">
+        <action
+            android:id="@+id/action_notification_detail_to_bills"
+            app:destination="@id/billsFragment" />
+        <action
+            android:id="@+id/action_notification_detail_to_rooms"
+            app:destination="@id/roomsFragment" />
+    </fragment>
+</navigation>

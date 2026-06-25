@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:clipToPadding="false"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/screen_padding_horizontal"
+        android:paddingTop="@dimen/screen_padding_vertical"
+        android:paddingEnd="@dimen/screen_padding_horizontal"
+        android:paddingBottom="@dimen/screen_padding_bottom">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/meter_reading_title"
+            android:textAppearance="@style/TextAppearance.SmartRent.TitleLarge" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_8"
+            android:text="@string/meter_reading_subtitle"
+            android:textAppearance="@style/TextAppearance.SmartRent.BodySecondary" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.SmartRent.Card.Elevated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/section_spacing"
+            app:contentPadding="@dimen/card_padding">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/meterRoomInputLayout"
+                    style="@style/Widget.SmartRent.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/meter_room_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/meterRoomEditText"
+                        style="@style/Widget.SmartRent.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:text="@string/bill_room_placeholder" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/meterPeriodInputLayout"
+                    style="@style/Widget.SmartRent.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:hint="@string/meter_period_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/meterPeriodEditText"
+                        style="@style/Widget.SmartRent.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:text="@string/bill_period_placeholder" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/electricStartInputLayout"
+                    style="@style/Widget.SmartRent.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:hint="@string/meter_electric_start_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/electricStartEditText"
+                        style="@style/Widget.SmartRent.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberDecimal"
+                        android:singleLine="true"
+                        android:text="@string/meter_electric_start_placeholder" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/electricEndInputLayout"
+                    style="@style/Widget.SmartRent.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:hint="@string/meter_electric_end_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/electricEndEditText"
+                        style="@style/Widget.SmartRent.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberDecimal"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/waterStartInputLayout"
+                    style="@style/Widget.SmartRent.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:hint="@string/meter_water_start_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/waterStartEditText"
+                        style="@style/Widget.SmartRent.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberDecimal"
+                        android:singleLine="true"
+                        android:text="@string/meter_water_start_placeholder" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/waterEndInputLayout"
+                    style="@style/Widget.SmartRent.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:hint="@string/meter_water_end_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/waterEndEditText"
+                        style="@style/Widget.SmartRent.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberDecimal"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.SmartRent.Card.State"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_12"
+                    app:cardBackgroundColor="@color/sr_info_container"
+                    app:contentPadding="@dimen/card_padding"
+                    app:strokeColor="@color/sr_info_container">
+
+                    <TextView
+                        android:id="@+id/usagePreviewTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/meter_usage_preview_placeholder"
+                        android:textAppearance="@style/TextAppearance.SmartRent.BodySecondary"
+                        android:textColor="@color/sr_info_text" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/meterNoteInputLayout"
+                    style="@style/Widget.SmartRent.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:hint="@string/meter_note_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/meterNoteEditText"
+                        style="@style/Widget.SmartRent.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:imeOptions="actionDone"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
+                        android:maxLines="5" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/saveMeterButton"
+            style="@style/Widget.SmartRent.Button.Loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/section_spacing"
+            android:text="@string/meter_save_action" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancelButton"
+            style="@style/Widget.SmartRent.Button.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_8"
+            android:text="@string/bill_cancel_action" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

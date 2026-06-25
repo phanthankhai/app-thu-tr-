@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:clipToPadding="false"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/screen_padding_horizontal"
+        android:paddingTop="@dimen/screen_padding_vertical"
+        android:paddingEnd="@dimen/screen_padding_horizontal"
+        android:paddingBottom="@dimen/screen_padding_bottom">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_settings"
+            android:textAppearance="@style/TextAppearance.SmartRent.TitleLarge" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:text="@string/settings_subtitle"
+            android:textAppearance="@style/TextAppearance.SmartRent.BodySecondary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/section_spacing"
+            android:text="@string/settings_account_section"
+            android:textAppearance="@style/TextAppearance.SmartRent.SectionTitle" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.SmartRent.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/form_field_gap"
+            app:contentPadding="@dimen/card_padding">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/profileInfoRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/list_item_min_height"
+                    android:text="@string/settings_profile_info"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Body" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_profile_info_note"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+
+                <TextView
+                    android:id="@+id/changePasswordRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:enabled="false"
+                    android:minHeight="@dimen/list_item_min_height"
+                    android:text="@string/settings_change_password"
+                    android:textAppearance="@style/TextAppearance.SmartRent.BodySecondary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_change_password_note"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/section_spacing"
+            android:text="@string/settings_space_section"
+            android:textAppearance="@style/TextAppearance.SmartRent.SectionTitle" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.SmartRent.Card.State"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/form_field_gap"
+            app:cardBackgroundColor="@color/sr_info_container"
+            app:contentPadding="@dimen/card_padding"
+            app:strokeColor="@color/sr_info_container">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.SmartRent.StatusChip.Info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_user_role" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/component_gap"
+                    android:text="@string/settings_current_space"
+                    android:textAppearance="@style/TextAppearance.SmartRent.TitleMedium" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_xs"
+                    android:text="@string/settings_current_space_note"
+                    android:textAppearance="@style/TextAppearance.SmartRent.BodySecondary" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/section_spacing"
+            android:text="@string/settings_preferences_section"
+            android:textAppearance="@style/TextAppearance.SmartRent.SectionTitle" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.SmartRent.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/form_field_gap"
+            app:contentPadding="@dimen/card_padding">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/list_item_min_height"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_language_label"
+                        android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:text="@string/settings_language_value"
+                        android:textAppearance="@style/TextAppearance.SmartRent.Body" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:minHeight="@dimen/list_item_min_height"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_currency_label"
+                        android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:text="@string/settings_currency_value"
+                        android:textAppearance="@style/TextAppearance.SmartRent.Body" />
+                </LinearLayout>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/darkModeSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:checked="false"
+                    android:enabled="false"
+                    android:minHeight="@dimen/list_item_min_height"
+                    android:text="@string/settings_dark_mode"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Body" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_dark_mode_note"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/section_spacing"
+            android:text="@string/settings_notification_section"
+            android:textAppearance="@style/TextAppearance.SmartRent.SectionTitle" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.SmartRent.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/form_field_gap"
+            app:contentPadding="@dimen/card_padding">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/billNotificationSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:minHeight="@dimen/list_item_min_height"
+                    android:text="@string/settings_bill_notification"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Body" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_bill_notification_note"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/roomNotificationSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:checked="true"
+                    android:minHeight="@dimen/list_item_min_height"
+                    android:text="@string/settings_room_notification"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Body" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_room_notification_note"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/tenantNotificationSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:checked="true"
+                    android:minHeight="@dimen/list_item_min_height"
+                    android:text="@string/settings_tenant_notification"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Body" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_tenant_notification_note"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/systemNotificationSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:checked="false"
+                    android:minHeight="@dimen/list_item_min_height"
+                    android:text="@string/settings_system_notification"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Body" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_system_notification_note"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/section_spacing"
+            android:text="@string/settings_danger_section"
+            android:textAppearance="@style/TextAppearance.SmartRent.SectionTitle" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.SmartRent.Card.State"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/form_field_gap"
+            app:cardBackgroundColor="@color/sr_neutral_container"
+            app:contentPadding="@dimen/card_padding"
+            app:strokeColor="@color/sr_neutral_container">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/settingsLogoutButton"
+                    style="@style/Widget.SmartRent.Button.Secondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:text="@string/settings_logout_action"
+                    android:textColor="@color/sr_error" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/deleteAccountButton"
+                    style="@style/Widget.SmartRent.Button.Secondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/component_gap"
+                    android:enabled="false"
+                    android:text="@string/settings_delete_account_action"
+                    android:textColor="@color/sr_error" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

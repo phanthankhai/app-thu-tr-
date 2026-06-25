@@ -1,0 +1,29 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.Rent" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:colorAccent">@color/sr_primary</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:navigationBarColor">@color/sr_text_primary</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="android:windowBackground">@color/sr_text_primary</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="bottomNavigationStyle">@style/Widget.SmartRent.BottomNavigation</item>
+        <item name="bottomSheetStyle">@style/Widget.SmartRent.BottomSheet.Modal</item>
+        <item name="colorAccent">@color/sr_primary</item>
+        <item name="colorBackgroundFloating">@color/sr_text_primary</item>
+        <item name="colorControlActivated">@color/sr_primary_light</item>
+        <item name="colorControlNormal">@color/sr_border</item>
+        <item name="colorError">@color/sr_error</item>
+        <item name="colorOnError">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSurface">@color/sr_surface</item>
+        <item name="colorPrimary">@color/sr_primary</item>
+        <item name="colorPrimaryDark">@color/sr_primary_dark</item>
+        <item name="colorSecondary">@color/sr_secondary</item>
+        <item name="colorSurface">@color/sr_text_primary</item>
+        <item name="materialButtonStyle">@style/Widget.SmartRent.Button.Primary</item>
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+</resources>

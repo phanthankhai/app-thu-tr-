@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:clipToPadding="false"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/screen_padding_horizontal"
+        android:paddingTop="@dimen/screen_padding_vertical"
+        android:paddingEnd="@dimen/screen_padding_horizontal"
+        android:paddingBottom="@dimen/screen_padding_bottom">
+
+        <TextView
+            android:id="@+id/formTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tenant_add_title"
+            android:textAppearance="@style/TextAppearance.SmartRent.TitleLarge" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_8"
+            android:text="@string/tenant_add_subtitle"
+            android:textAppearance="@style/TextAppearance.SmartRent.BodySecondary" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.SmartRent.Card.Elevated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/section_spacing"
+            app:contentPadding="@dimen/card_padding">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tenantNameInputLayout"
+                    style="@style/Widget.SmartRent.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/tenant_name_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tenantNameEditText"
+                        style="@style/Widget.SmartRent.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tenantPhoneInputLayout"
+                    style="@style/Widget.SmartRent.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:hint="@string/tenant_phone_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tenantPhoneEditText"
+                        style="@style/Widget.SmartRent.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="phone"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tenantEmailInputLayout"
+                    style="@style/Widget.SmartRent.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:hint="@string/tenant_email_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tenantEmailEditText"
+                        style="@style/Widget.SmartRent.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tenantIdentityInputLayout"
+                    style="@style/Widget.SmartRent.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:hint="@string/tenant_identity_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tenantIdentityEditText"
+                        style="@style/Widget.SmartRent.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tenantRoomInputLayout"
+                    style="@style/Widget.SmartRent.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:hint="@string/tenant_room_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tenantRoomEditText"
+                        style="@style/Widget.SmartRent.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:text="@string/tenant_room_placeholder" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tenantStartDateInputLayout"
+                    style="@style/Widget.SmartRent.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:hint="@string/tenant_start_date_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tenantStartDateEditText"
+                        style="@style/Widget.SmartRent.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:text="@string/tenant_start_date_placeholder" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tenantNoteInputLayout"
+                    style="@style/Widget.SmartRent.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_field_gap"
+                    android:hint="@string/tenant_note_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tenantNoteEditText"
+                        style="@style/Widget.SmartRent.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:imeOptions="actionDone"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
+                        android:maxLines="5" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/saveTenantButton"
+            style="@style/Widget.SmartRent.Button.Loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/section_spacing"
+            android:text="@string/tenant_save_action" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancelButton"
+            style="@style/Widget.SmartRent.Button.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_8"
+            android:text="@string/tenant_cancel_action" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:clipToPadding="false"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/screen_padding_horizontal"
+        android:paddingTop="@dimen/screen_padding_vertical"
+        android:paddingEnd="@dimen/screen_padding_horizontal"
+        android:paddingBottom="@dimen/screen_padding_bottom">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_notifications"
+                    android:textAppearance="@style/TextAppearance.SmartRent.TitleLarge" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_xs"
+                    android:text="@string/notifications_subtitle"
+                    android:textAppearance="@style/TextAppearance.SmartRent.BodySecondary" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/markAllReadButton"
+                style="@style/Widget.SmartRent.Button.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="@string/notifications_mark_all_read" />
+        </LinearLayout>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_lg"
+            android:scrollbars="none">
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:selectionRequired="false"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.SmartRent.FilterChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/notifications_filter_all" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.SmartRent.FilterChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notifications_filter_unread" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.SmartRent.FilterChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notifications_filter_bills" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.SmartRent.FilterChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notifications_filter_rooms" />
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/section_spacing"
+            android:text="@string/notifications_today"
+            android:textAppearance="@style/TextAppearance.SmartRent.SectionTitle" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/billNotificationCard"
+            style="@style/Widget.SmartRent.Card.Clickable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/form_field_gap"
+            android:clickable="true"
+            android:contentDescription="@string/notification_bill_title"
+            android:focusable="true"
+            android:minHeight="@dimen/list_item_min_height"
+            app:cardBackgroundColor="@color/sr_info_container"
+            app:contentPadding="@dimen/card_padding"
+            app:strokeColor="@color/sr_info_container">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/avatar_size_md"
+                    android:layout_height="@dimen/avatar_size_md"
+                    android:background="@color/sr_surface"
+                    android:gravity="center"
+                    android:text="@string/notification_type_bill_short"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Label"
+                    android:textColor="@color/sr_primary" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_lg"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@string/notification_bill_title"
+                            android:textAppearance="@style/TextAppearance.SmartRent.TitleMedium" />
+
+                        <com.google.android.material.chip.Chip
+                            style="@style/Widget.SmartRent.StatusChip.Info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/component_gap"
+                            android:text="@string/notification_status_unread" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="@string/notification_bill_body"
+                        android:textAppearance="@style/TextAppearance.SmartRent.BodySecondary" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/component_gap"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/notification_bill_time"
+                            android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/viewBillNotificationButton"
+                            style="@style/Widget.SmartRent.Button.Text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/notification_view_detail" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/roomNotificationCard"
+            style="@style/Widget.SmartRent.Card.Clickable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/form_field_gap"
+            android:clickable="true"
+            android:contentDescription="@string/notification_room_title"
+            android:focusable="true"
+            android:minHeight="@dimen/list_item_min_height"
+            app:contentPadding="@dimen/card_padding">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/avatar_size_md"
+                    android:layout_height="@dimen/avatar_size_md"
+                    android:background="@color/sr_vacant_container"
+                    android:gravity="center"
+                    android:text="@string/notification_type_room_short"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Label"
+                    android:textColor="@color/sr_vacant_text" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_lg"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/notification_room_title"
+                        android:textAppearance="@style/TextAppearance.SmartRent.TitleMedium" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="@string/notification_room_body"
+                        android:textAppearance="@style/TextAppearance.SmartRent.BodySecondary" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/component_gap"
+                        android:text="@string/notification_room_time"
+                        android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/section_spacing"
+            android:text="@string/notifications_earlier"
+            android:textAppearance="@style/TextAppearance.SmartRent.SectionTitle" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/tenantNotificationCard"
+            style="@style/Widget.SmartRent.Card.Clickable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/form_field_gap"
+            android:clickable="true"
+            android:contentDescription="@string/notification_tenant_title"
+            android:focusable="true"
+            android:minHeight="@dimen/list_item_min_height"
+            app:contentPadding="@dimen/card_padding">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/avatar_size_md"
+                    android:layout_height="@dimen/avatar_size_md"
+                    android:background="@color/sr_warning_container"
+                    android:gravity="center"
+                    android:text="@string/notification_type_tenant_short"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Label"
+                    android:textColor="@color/sr_warning_text" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_lg"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/notification_tenant_title"
+                        android:textAppearance="@style/TextAppearance.SmartRent.TitleMedium" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="@string/notification_tenant_body"
+                        android:textAppearance="@style/TextAppearance.SmartRent.BodySecondary" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/component_gap"
+                        android:text="@string/notification_tenant_time"
+                        android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/meterNotificationCard"
+            style="@style/Widget.SmartRent.Card.Clickable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/form_field_gap"
+            android:clickable="true"
+            android:contentDescription="@string/notification_meter_title"
+            android:focusable="true"
+            android:minHeight="@dimen/list_item_min_height"
+            app:contentPadding="@dimen/card_padding">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/avatar_size_md"
+                    android:layout_height="@dimen/avatar_size_md"
+                    android:background="@color/sr_neutral_container"
+                    android:gravity="center"
+                    android:text="@string/notification_type_meter_short"
+                    android:textAppearance="@style/TextAppearance.SmartRent.Label"
+                    android:textColor="@color/sr_neutral_text" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_lg"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/notification_meter_title"
+                        android:textAppearance="@style/TextAppearance.SmartRent.TitleMedium" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="@string/notification_meter_body"
+                        android:textAppearance="@style/TextAppearance.SmartRent.BodySecondary" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/component_gap"
+                        android:text="@string/notification_meter_time"
+                        android:textAppearance="@style/TextAppearance.SmartRent.Caption" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
