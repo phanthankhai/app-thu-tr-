@@ -75,4 +75,37 @@ class ContractController extends Controller
             'data'    => $contract
         ], 201);
     }
+    public function terminate($id)
+    {
+        $contract = Contract::find($id);
+
+        if (!$contract) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Không tìm thấy hợp đồng.'
+            ], 404);
+        }
+
+        if ($contract->status !== 'active') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Hợp đồng này đã kết thúc hoặc bị hủy từ trước.'
+            ], 400);
+        }
+
+        // 1. Đổi trạng thái hợp đồng thành "Đã hết hạn"
+        $contract->update(['status' => 'expired']);
+
+        // 2. Trả lại trạng thái phòng thành "Trống"
+        $room = Room::find($contract->room_id);
+        if ($room) {
+            $room->update(['status' => 'empty']);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Đã kết thúc hợp đồng thành công. Phòng hiện tại đã trống và sẵn sàng đón khách mới.',
+            'data'    => $contract
+        ], 200);
+    }
 }

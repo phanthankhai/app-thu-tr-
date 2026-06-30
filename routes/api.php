@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Admin\RoomController;
 use App\Http\Controllers\Api\Admin\ContractController;
+use App\Http\Controllers\Api\Admin\ServiceController;
+use App\Http\Controllers\Api\Admin\InvoiceController;
 
 // ==========================================
 // 1. Tuyến đường KHÔNG yêu cầu đăng nhập
@@ -36,8 +38,16 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
         Route::delete('/rooms/{id}', [RoomController::class, 'destroy']); 
         
         // Quản lý hợp đồng
-        Route::post('/contracts', [ContractController::class, 'store']);
-        // Quản lý hợp đồng
         Route::get('/contracts', [ContractController::class, 'index']);
+        Route::post('/contracts', [ContractController::class, 'store']);
+        Route::post('/contracts/{id}/terminate', [ContractController::class, 'terminate']);
+        
+        // Quản lý dịch vụ
+        Route::get('/services', [ServiceController::class, 'index']);
+        Route::post('/services', [ServiceController::class, 'store']);
+
+        // Quản lý hóa đơn
+        Route::post('/invoices', [InvoiceController::class, 'store']);
+        Route::post('/invoices/{id}/split', [InvoiceController::class, 'splitBill']); // (MỚI THÊM)
     });
 });
