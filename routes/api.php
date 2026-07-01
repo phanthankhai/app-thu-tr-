@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\Admin\RoomController;
 use App\Http\Controllers\Api\Admin\ContractController;
 use App\Http\Controllers\Api\Admin\ServiceController;
 use App\Http\Controllers\Api\Admin\InvoiceController;
-
+use App\Http\Controllers\Api\Admin\PaymentController;
 // ==========================================
 // 1. Tuyến đường KHÔNG yêu cầu đăng nhập
 // ==========================================
@@ -48,6 +48,9 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
 
         // Quản lý hóa đơn
         Route::post('/invoices', [InvoiceController::class, 'store']);
-        Route::post('/invoices/{id}/split', [InvoiceController::class, 'splitBill']); // (MỚI THÊM)
+        Route::post('/invoices/{id}/split', [InvoiceController::class, 'splitBill']);
+
+        // Quản lý Thanh toán (Module 5)
+        Route::post('/invoices/{id}/payments', [PaymentController::class, 'store']);
     });
 });
