@@ -6,24 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up(): void
-    {
-        Schema::create('contracts', function (Blueprint $table) {
-            $table->id();
-            // Khóa ngoại liên kết với bảng rooms
-            $table->foreignId('room_id')->constrained('rooms')->onDelete('cascade'); 
-            
-            // Thông tin khách thuê đại diện
-            $table->string('tenant_name');
-            $table->string('tenant_phone');
-            
-            // Thông tin hợp đồng
-            $table->decimal('deposit', 12, 2)->default(0); // Tiền cọc
-            $table->date('start_date'); // Ngày dọn vào
-            $table->enum('status', ['active', 'expired', 'cancelled'])->default('active'); // Trạng thái hợp đồng
-            $table->timestamps();
-        });
-    }
+    public function up()
+{
+    Schema::create('contracts', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('room_id')->constrained('rooms')->onDelete('cascade');
+        $table->string('tenant_name'); // Tên người thuê
+        $table->string('tenant_phone'); // Số điện thoại
+        $table->string('tenant_cccd'); // Số Căn cước công dân
+        $table->date('start_date'); // Ngày bắt đầu thuê
+        $table->date('end_date')->nullable(); // Ngày hết hạn (có thể để trống nếu thuê vô thời hạn)
+        $table->decimal('deposit', 15, 2)->default(0); // Tiền cọc
+        $table->enum('status', ['active', 'expired', 'cancelled'])->default('active'); // Trạng thái HĐ
+        $table->timestamps();
+    });
+}
 
     public function down(): void
     {

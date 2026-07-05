@@ -13,11 +13,12 @@ class Contract extends Model
         'room_id',
         'tenant_name',
         'tenant_phone',
-        'deposit',
+        'tenant_cccd', // Bổ sung CCCD
         'start_date',
+        'end_date',    // Bổ sung ngày hết hạn
+        'deposit',
         'status'
     ];
-
     // Khai báo mối quan hệ: 1 Hợp đồng thuộc về 1 Phòng
     public function room()
     {

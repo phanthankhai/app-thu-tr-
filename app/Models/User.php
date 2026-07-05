@@ -44,4 +44,8 @@ class User extends Authenticatable implements JWTSubject
             'room_id' => $this->room_id
         ];
     }
+    public function room()
+    {
+        return $this->belongsTo(Room::class, 'room_id');
+    }
 }

@@ -7,75 +7,72 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class OnboardingController extends Controller
 {
     /**
-     * API Chủ trọ thêm thành viên vào phòng (Zero-Friction Onboarding)
+     * API Chủ trọ thêm thành viên vào phòng
      */
     public function onboardTenant(Request $request)
     {
-        // 1. Xác thực dữ liệu đầu vào từ phía ứng dụng của Chủ trọ
+        // 1. Kiểm tra quyền Admin (Chỉ Admin mới được onboard khách)
+        if (auth('api')->user()->role !== 'admin') {
+            return response()->json(['success' => false, 'message' => 'Bạn không có quyền thực hiện hành động này.'], 403);
+        }
+
+        // 2. Xác thực dữ liệu
         $validator = Validator::make($request->all(), [
-            'phone' => 'required|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users,phone',
-            'room_id' => 'required|integer|exists:rooms,id', // Đảm bảo ID phòng trọ có tồn tại
-            'name' => 'required|string|max:255',
+            'phone'   => 'required|string|unique:users,phone',
+            'room_id' => 'required|integer|exists:rooms,id',
+            'name'    => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'success' => false,
-                'message' => 'Dữ liệu không hợp lệ.',
-                'errors' => $validator->errors()
+                'success' => false, 
+                'message' => 'Dữ liệu không hợp lệ.', 
+                'errors'  => $validator->errors()
             ], 422);
         }
 
         try {
-            // 2. Thuật toán sinh mật khẩu tạm thời (Mã số ngẫu nhiên 6 chữ số làm OTP)
+            // 3. Sinh mật khẩu tạm (6 chữ số)
             $temporaryPassword = (string) rand(100000, 999999);
 
-            // 3. Tiến hành khởi tạo tài khoản tự động trong Database
+            // 4. Tạo tài khoản Tenant
             $tenant = User::create([
-                'name' => $request->input('name'),
-                'phone' => $request->input('phone'), // Tên đăng nhập cố định
-                'room_id' => $request->input('room_id'), // Gán trực tiếp vào phòng tương ứng
-                'role' => 'tenant', // Thiết lập vai trò mặc định là người thuê trọ
-                'password' => Hash::make($temporaryPassword), // Băm mật khẩu tạm bảo mật
-                'is_first_login' => true, // Đặt cờ bắt buộc đổi mật khẩu khi đăng nhập
+                'name'           => $request->name,
+                'phone'          => $request->phone,
+                'room_id'        => $request->room_id,
+                'role'           => 'tenant', // Luôn gắn role là tenant
+                'password'       => Hash::make($temporaryPassword),
+                'is_first_login' => true,     // Ép đổi mật khẩu khi login lần đầu
             ]);
 
-            // 4. Giả lập luồng gửi Mật khẩu tạm thời qua hệ thống SMS/Email định tuyến ngầm
-            // Trong thực tế, bạn sẽ dispatch một Job/Event ở đây để gửi SMS qua bên thứ 3 (Twilio, Stringee, SpeedSMS)
+            // 5. Gửi SMS (Log để test)
             $this->sendTemporaryPasswordViaSMS($tenant->phone, $temporaryPassword);
 
-            // 5. Phản hồi trạng thái thành công ngay lập tức để không treo ứng dụng
             return response()->json([
                 'success' => true,
-                'message' => 'Khởi tạo tài khoản người thuê thành công. Mật khẩu tạm đã được gửi đi.',
-                'data' => [
-                    'id' => $tenant->id,
-                    'phone' => $tenant->phone,
-                    'room_id' => $tenant->room_id,
-                    'is_first_login' => $tenant->is_first_login
+                'message' => 'Onboard khách thành công.',
+                'data'    => [
+                    'phone'    => $tenant->phone,
+                    'temp_pwd' => $temporaryPassword // Trả về để Admin biết mà nhắn cho khách nếu SMS chưa kịp tích hợp
                 ]
             ], 201);
 
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
-                'message' => 'Đã xảy ra lỗi trong quá trình xử lý hệ thống.',
-                'error' => $e->getMessage()
+                'success' => false, 
+                'message' => 'Lỗi hệ thống: ' . $e->getMessage()
             ], 500);
         }
     }
 
-    /**
-     * Hàm phụ trợ giả lập gửi SMS OTP/Mật khẩu tạm thời
-     */
     private function sendTemporaryPasswordViaSMS($phone, $password)
     {
-        // Logic tích hợp SDK của nhà mạng gửi SMS tin nhắn thương hiệu ở đây
-        // Ví dụ: Log::info("Đã gửi mật khẩu tạm [{$password}] đến số điện thoại [{$phone}].");
+        // Log vào file storage/logs/laravel.log để xem mật khẩu
+        Log::info("SMS to {$phone}: Tài khoản SmartRent - Mật khẩu: {$password}");
     }
 }
