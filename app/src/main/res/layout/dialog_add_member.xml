@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/etMemberName"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Họ và tên thành viên"
+        android:inputType="textPersonName"
+        android:padding="10dp"
+        android:background="@android:drawable/editbox_background"
+        android:layout_marginBottom="12dp"/>
+
+    <EditText
+        android:id="@+id/etMemberPhone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Số điện thoại"
+        android:inputType="phone"
+        android:padding="10dp"
+        android:background="@android:drawable/editbox_background"/>
+
+</LinearLayout>

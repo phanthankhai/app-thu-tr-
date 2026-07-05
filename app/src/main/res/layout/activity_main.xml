@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="32dp"
+    android:gravity="center"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SmartRent"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#FF5722"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quản lý nhà trọ thông minh"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_marginBottom="48dp"/>
+
+    <EditText
+        android:id="@+id/edtPhone"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:hint="Số điện thoại"
+        android:inputType="phone"
+        android:background="#E0E0E0"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/edtPassword"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:hint="Mật khẩu"
+        android:inputType="textPassword"
+        android:background="#E0E0E0"
+        android:padding="12dp"
+        android:layout_marginBottom="32dp"/>
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="ĐĂNG NHẬP"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:backgroundTint="#FF5722"/>
+
+</LinearLayout>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F9FA">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="LẬP HÓA ĐƠN THÁNG"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#1976D2"
+            android:gravity="center"
+            android:layout_marginBottom="24dp"/>
+
+        <EditText
+            android:id="@+id/etRoomId"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Nhập ID Phòng (VD: 1)"
+            android:inputType="number"
+            android:background="@android:drawable/editbox_background"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp"/>
+
+        <EditText
+            android:id="@+id/etBillingMonth"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Tháng chốt (VD: 07-2026)"
+            android:background="@android:drawable/editbox_background"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <EditText
+                android:id="@+id/etOldElectric"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_weight="1"
+                android:hint="Số điện CŨ"
+                android:inputType="number"
+                android:background="@android:drawable/editbox_background"
+                android:padding="12dp"
+                android:layout_marginEnd="8dp"/>
+
+            <EditText
+                android:id="@+id/etNewElectric"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_weight="1"
+                android:hint="Số điện MỚI"
+                android:inputType="number"
+                android:background="@android:drawable/editbox_background"
+                android:padding="12dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="24dp">
+
+            <EditText
+                android:id="@+id/etOldWater"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_weight="1"
+                android:hint="Số nước CŨ"
+                android:inputType="number"
+                android:background="@android:drawable/editbox_background"
+                android:padding="12dp"
+                android:layout_marginEnd="8dp"/>
+
+            <EditText
+                android:id="@+id/etNewWater"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_weight="1"
+                android:hint="Số nước MỚI"
+                android:inputType="number"
+                android:background="@android:drawable/editbox_background"
+                android:padding="12dp"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSubmitBill"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="CHỐT HÓA ĐƠN &amp; TÍNH TIỀN"
+            android:backgroundTint="#4CAF50"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+</ScrollView>
