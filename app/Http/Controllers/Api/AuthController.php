@@ -113,13 +113,15 @@ class AuthController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $user = User::create([
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),
-            'role' => 'tenant',
-            'is_first_login' => false,
-        ]);
+        \Illuminate\Support\Facades\Log::info('Tài khoản tự đăng ký - SĐT: ' . $request->phone . ' | Mật khẩu: ' . $request->password);
+
+$user = User::create([
+    'name' => $request->name,
+    'phone' => $request->phone,
+    'password' => Hash::make($request->password), 
+    'role' => 'tenant',
+    'is_first_login' => false,
+]);
 
         return response()->json([
             'success' => true,

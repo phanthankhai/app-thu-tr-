@@ -8,6 +8,7 @@ use App\Models\Bill;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class BillController extends Controller
 {
@@ -136,21 +137,21 @@ class BillController extends Controller
 
     public function tenantNotifyPayment(Request $request, $id)
 {
-    $bill = Bill::find($id);
+    $bill = \App\Models\Bill::find($id);
 
     if (!$bill) {
         return response()->json(['success' => false, 'message' => 'Không tìm thấy hóa đơn.'], 404);
     }
 
-    $validator = Validator::make($request->all(), [
-        'payment_method' => 'required|in:cash,transfer', // Chỉ chấp nhận tiền mặt hoặc chuyển khoản
+    $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+        'payment_method' => 'required|in:cash,transfer', 
+        'amount'         => 'required|numeric|min:0' 
     ]);
 
     if ($validator->fails()) {
         return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
     }
 
-    // Chặn nếu chọn chuyển khoản vì tính năng này đang nghiên cứu
     if ($request->payment_method === 'transfer') {
         return response()->json([
             'success' => false, 
@@ -158,14 +159,113 @@ class BillController extends Controller
         ], 400);
     }
 
-    // Chuyển trạng thái hóa đơn từ unpaid -> pending (Chờ xác nhận)
-    $bill->update([
-        'status' => 'pending'
-    ]);
+    $user = auth('api')->user();
+
+    // Đồng bộ chữ 'transfer' từ điện thoại thành 'bank_transfer' của Database
+    $dbMethod = $request->payment_method === 'transfer' ? 'bank_transfer' : 'cash';
+
+    try {
+        // Ghi lịch sử thanh toán lẻ vào bảng payments
+        \App\Models\Payment::create([
+            'bill_id'        => $bill->id,
+            'user_id'        => $user->id,
+            'amount'         => $request->amount,
+            'payment_method' => $dbMethod,
+            'status'         => 'pending' 
+        ]);
+
+        // ĐÃ XÓA KHỐI $bill->update TẠI ĐÂY ĐỂ TRÁNH HOÀN TOÀN LỖI ENUM (Data truncated)
+
+    } catch (\Exception $e) {
+        \Illuminate\Support\Facades\Log::error("Lỗi lưu Payment lẻ: " . $e->getMessage());
+        return response()->json([
+            'success' => false,
+            'message' => 'Hệ thống gặp lỗi khi tạo lịch sử giao dịch. Chi tiết: ' . $e->getMessage()
+        ], 500);
+    }
+
+    $formattedAmount = number_format($request->amount, 0, ',', '.');
 
     return response()->json([
         'success' => true,
-        'message' => 'Đã gửi yêu cầu thanh toán bằng tiền mặt. Vui lòng đợi Admin xác nhận.'
+        'message' => "Đã gửi thông báo thanh toán phần tiền của bạn ({$formattedAmount}đ). Vui lòng đợi Admin xác nhận."
     ], 200);
+}
+public function getPendingPayments()
+{
+    if (auth('api')->user()->role !== 'admin') {
+        return response()->json(['success' => false, 'message' => 'Bạn không có quyền.'], 403);
+    }
+
+    // Lấy các giao dịch đang 'pending', kèm thông tin người đóng, thông tin hóa đơn và phòng
+    $payments = \App\Models\Payment::where('status', 'pending')
+                    ->with(['user:id,name,phone', 'bill.room:id,name,price'])
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Lấy danh sách chờ duyệt thành công.',
+        'data'    => $payments
+    ], 200);
+}
+
+// 2. API Admin bấm xác nhận đã nhận tiền thành công
+public function approvePayment($id)
+{
+    if (auth('api')->user()->role !== 'admin') {
+        return response()->json(['success' => false, 'message' => 'Bạn không có quyền.'], 403);
+    }
+
+    $payment = \App\Models\Payment::find($id);
+
+    if (!$payment) {
+        return response()->json(['success' => false, 'message' => 'Không tìm thấy giao dịch lẻ này.'], 404);
+    }
+
+    if ($payment->status === 'approved') {
+        return response()->json(['success' => false, 'message' => 'Giao dịch này đã được duyệt trước đó.'], 400);
+    }
+
+    try {
+        DB::beginTransaction();
+
+        // Bước A: Cập nhật biên lai lẻ này thành 'approved' (Đã nhận tiền)
+        $payment->update(['status' => 'approved']);
+
+        // Bước B: Tính toán tổng tiền hóa đơn gốc để làm mốc so sánh
+        $bill = \App\Models\Bill::find($payment->bill_id);
+        if ($bill) {
+            // Thực hiện tính toán tổng tiền y hệt như công thức dưới điện thoại của khách
+            $tienDien = (($bill->new_electric ?? 0) - ($bill->old_electric ?? 0)) * 3500;
+            $tienNuoc = (($bill->new_water ?? 0) - ($bill->old_water ?? 0)) * 15000;
+            $roomPrice = $bill->room ? $bill->room->price : 0;
+            
+            $totalBillAmount = $roomPrice + $tienDien + $tienNuoc;
+
+            // Bước C: Tính tổng toàn bộ tiền lẻ ĐÃ DUYỆT THÀNH CÔNG của hóa đơn này từ trước tới nay
+            $totalApprovedAmount = \App\Models\Payment::where('bill_id', $bill->id)
+                                                      ->where('status', 'approved')
+                                                      ->sum('amount');
+
+            // Bước D: Thuật toán thông minh tự động chốt sổ hóa đơn tổng
+            // Nếu tổng số tiền các bạn trong phòng góp lại đã ĐỦ HOẶC VƯỢT tổng hóa đơn phòng
+            if ($totalApprovedAmount >= $totalBillAmount) {
+                $bill->update(['status' => 'paid']); // Chuyển trạng thái hóa đơn gốc thành PAID (Đã thanh toán)
+            }
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Đã duyệt thành công khoản tiền lẻ này!'
+        ], 200);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        \Illuminate\Support\Facades\Log::error("Lỗi duyệt payment: " . $e->getMessage());
+        return response()->json(['success' => false, 'message' => 'Lỗi hệ thống khi duyệt tiền.'], 500);
+    }
 }
 }

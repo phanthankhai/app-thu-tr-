@@ -10,14 +10,19 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            // Liên kết với hóa đơn
-            $table->foreignId('invoice_id')->constrained('invoices')->onDelete('cascade');
+            // Liên kết cũ
+            $table->foreignId('invoice_id')->nullable()->constrained('invoices')->onDelete('cascade');
             
-            // Thông tin giao dịch
-            $table->decimal('amount', 12, 2); // Số tiền đóng lần này
-            $table->enum('payment_method', ['cash', 'bank_transfer', 'momo'])->default('cash'); // Hình thức
-            $table->string('transaction_code')->nullable(); // Mã giao dịch (nếu chuyển khoản)
-            $table->text('notes')->nullable(); // Ghi chú thêm
+            // BỔ SUNG THÊM LIÊN KẾT MỚI CHO CHỨC NĂNG CHIA TIỀN
+            $table->unsignedBigInteger('bill_id')->nullable(); 
+            $table->unsignedBigInteger('user_id')->nullable(); // Để biết ai là người đóng tiền
+            $table->string('status')->default('pending'); // Trạng thái: pending, approved
+            
+            // Thông tin giao dịch (Giữ nguyên của bạn)
+            $table->decimal('amount', 12, 2); 
+            $table->enum('payment_method', ['cash', 'bank_transfer', 'momo'])->default('cash'); 
+            $table->string('transaction_code')->nullable(); 
+            $table->text('notes')->nullable(); 
             
             $table->timestamps();
         });

@@ -9,7 +9,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB; // Bắt buộc thêm dòng này để dùng Transaction
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ContractController extends Controller
 {
@@ -51,7 +52,7 @@ class ContractController extends Controller
             ], 422);
         }
 
-        // 2. KIỂM TRA PHÒNG TRỐNG TRƯỚC (Phải đặt lên trên đầu)
+        // 2. Kiểm tra phòng trống
         $room = Room::find($request->room_id);
         if ($room->status !== 'empty') {
             return response()->json([
@@ -60,28 +61,32 @@ class ContractController extends Controller
             ], 400);
         }
 
-        // Kích hoạt Transaction: Nếu một trong các bước dưới lỗi, toàn bộ sẽ hủy bỏ, không lo rác DB
         DB::beginTransaction();
 
         try {
-            // 3. XỬ LÝ TÀI KHOẢN USER
+            // 3. Xử lý tài khoản User
             $user = User::where('phone', $request->tenant_phone)->first();
             
             if (!$user) {
-                // Nếu SĐT này chưa từng đăng ký -> Tạo tài khoản mới
+                // Sinh mật khẩu tạm ngẫu nhiên 6 số để dễ quản lý
+                $tempPassword = (string) rand(100000, 999999);
+
+                // Ghi log mật khẩu để Admin debug khi cần
+                Log::info('--- HỢP ĐỒNG MỚI: TẠO TÀI KHOẢN KHÁCH THUÊ ---');
+                Log::info('SĐT khách: ' . $request->tenant_phone);
+                Log::info('Mật khẩu tạm thời: ' . $tempPassword);
+                Log::info('--------------------------------------------');
+
                 $user = User::create([
                     'name'           => $request->tenant_name,
                     'phone'          => $request->tenant_phone,
                     'room_id'        => $request->room_id,
                     'role'           => 'tenant',
-                    'password'       => Hash::make('123456'), 
+                    'password'       => Hash::make($tempPassword), 
                     'is_first_login' => true,
                 ]);
             } else {
-                // NẾU SĐT ĐÃ TỒN TẠI: Cập nhật room_id mới cho họ để đồng bộ với hợp đồng
-                $user->update([
-                    'room_id' => $request->room_id
-                ]);
+                $user->update(['room_id' => $request->room_id]);
             }
 
             // 4. Tạo hợp đồng mới 
@@ -96,21 +101,20 @@ class ContractController extends Controller
                 'status'       => 'active'
             ]);
 
-            // 5. Đổi trạng thái phòng thành "Đã thuê" (occupied)
+            // 5. Đổi trạng thái phòng thành "Đã thuê"
             $room->update(['status' => 'occupied']);
 
-            // Xác nhận hoàn tất lưu vào DB
             DB::commit();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Lập hợp đồng thành công. Tài khoản khách thuê đã được đồng bộ.',
+                'message' => 'Lập hợp đồng thành công. Tài khoản khách thuê đã được tạo/đồng bộ.',
                 'data'    => $contract
             ], 201);
 
         } catch (\Exception $e) {
-            // Nếu có bất kỳ lỗi khuất tất nào xảy ra (ví dụ nghẽn mạng, lỗi SQL...), hủy bỏ toàn bộ dữ liệu dự phòng
             DB::rollBack();
+            Log::error('Lỗi lập hợp đồng: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Đã xảy ra lỗi hệ thống khi lập hợp đồng.',
@@ -120,46 +124,33 @@ class ContractController extends Controller
     }
 
     /**
-     * API Thanh lý / Kết thúc hợp đồng
+     * API Thanh lý hợp đồng
      */
     public function terminate($id)
     {
         $contract = Contract::find($id);
 
         if (!$contract) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Không tìm thấy hợp đồng.'
-            ], 404);
+            return response()->json(['success' => false, 'message' => 'Không tìm thấy hợp đồng.'], 404);
         }
 
         if ($contract->status !== 'active') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Hợp đồng này đã kết thúc hoặc bị hủy từ trước.'
-            ], 400);
+            return response()->json(['success' => false, 'message' => 'Hợp đồng này không ở trạng thái active.'], 400);
         }
 
         DB::beginTransaction();
         try {
-            // 1. Đổi trạng thái hợp đồng thành "Đã hết hạn"
             $contract->update(['status' => 'expired']);
-
-            // 2. Trả lại trạng thái phòng thành "Trống"
+            
             $room = Room::find($contract->room_id);
             if ($room) {
                 $room->update(['status' => 'empty']);
             }
 
-            // 3. Gỡ phòng ra khỏi tài khoản User thuê phòng này để họ trở thành trạng thái tự do
             User::where('room_id', $contract->room_id)->update(['room_id' => null]);
 
             DB::commit();
-            return response()->json([
-                'success' => true,
-                'message' => 'Đã kết thúc hợp đồng thành công. Phòng hiện tại đã trống.',
-                'data'    => $contract
-            ], 200);
+            return response()->json(['success' => true, 'message' => 'Đã kết thúc hợp đồng thành công.'], 200);
 
         } catch (\Exception $e) {
             DB::rollBack();

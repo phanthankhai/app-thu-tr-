@@ -119,35 +119,47 @@ class TenantController extends Controller
     /**
      * API Dashboard cá nhân của Khách thuê
      */
-    public function getMyDashboard(Request $request)
+    public function getMyDashboard()
     {
-        if (auth('api')->user()->role !== 'tenant') {
-        return response()->json(['message' => 'Bạn không có quyền truy cập.'], 403);
-    }
-        /** @var \App\Models\User $user */
-        $user = auth('api')->user();
+        // 1. Lấy thông tin khách thuê đang đăng nhập
+        $user = auth('api')->user(); 
 
-        // Kiểm tra nếu người dùng chưa có phòng
         if (!$user->room_id) {
             return response()->json([
                 'success' => false,
-                'message' => 'Bạn chưa được xếp phòng.'
-            ], 404);
+                'message' => 'Tài khoản của bạn chưa được xếp vào phòng nào.'
+            ], 400);
         }
 
-        // Lấy thông tin phòng của user cùng với các hóa đơn chưa thanh toán
-        $room = $user->room()->with(['bills' => function($query) {
-            $query->where('status', 'unpaid'); // Chỉ lấy hóa đơn chưa trả
-        }])->first();
+        // 2. Lấy thông tin phòng và kèm theo TẤT CẢ users đang ở chung phòng
+        $room = \App\Models\Room::with(['users' => function($query) {
+            $query->where('role', 'tenant'); 
+        }])->find($user->room_id);
+
+        // 3. Lấy hóa đơn hiện tại của phòng
+        $bill = \App\Models\Bill::where('room_id', $user->room_id)
+                                ->whereIn('status', ['unpaid', 'pending'])
+                                ->first();
+
+        // ĐÃ CẬP NHẬT: Kiểm tra riêng lịch sử nộp tiền lẻ của user này cho hóa đơn hiện tại
+        if ($bill) {
+            $payment = \App\Models\Payment::where('bill_id', $bill->id)
+                                          ->where('user_id', $user->id)
+                                          ->first();
+            
+            // Gắn thuộc tính ảo báo trạng thái nộp tiền lẻ của cơ thể user này
+            $bill->my_payment_status = $payment ? $payment->status : 'not_paid_yet';
+        }
 
         return response()->json([
             'success' => true,
-            'data' => [
-                'user' => $user->only(['name', 'phone']),
-                'room' => $room,
-                'current_bill' => $room->bills->first() ?? null // Hóa đơn gần nhất cần thanh toán
+            'message' => 'Lấy dữ liệu Dashboard thành công.',
+            'data'    => [
+                'my_info' => $user,
+                'room'    => $room, 
+                'bill'    => $bill
             ]
-        ]);
+        ], 200);
     }
 
     public function addCoTenant(Request $request)
@@ -161,7 +173,7 @@ class TenantController extends Controller
         $validator = Validator::make($request->all(), [
             'room_id' => 'required|exists:rooms,id',
             'name'    => 'required|string|max:255',
-            'phone'   => 'required|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users,phone', // Đảm bảo SĐT chưa có tài khoản
+            'phone'   => 'required|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users,phone', 
         ]);
 
         if ($validator->fails()) {
@@ -170,9 +182,9 @@ class TenantController extends Controller
 
         $room = Room::find($request->room_id);
 
-        // 3. (Tùy chọn) Kiểm tra xem phòng đã đầy chưa
+        // 3. Kiểm tra xem phòng đã đầy chưa
         $currentTenantsCount = User::where('room_id', $room->id)->where('role', 'tenant')->count();
-        $maxOccupants = $room->max_occupants ?? 4; // Giả sử giới hạn là 4 nếu chưa có cột trong DB
+        $maxOccupants = $room->max_occupants ?? 4; 
         
         if ($currentTenantsCount >= $maxOccupants) {
             return response()->json([
@@ -181,27 +193,30 @@ class TenantController extends Controller
             ], 400);
         }
 
-        // 4. Khởi tạo tài khoản người ở ghép
+        // 4. Khởi tạo tài khoản người ở ghép với mật khẩu 6 số ngẫu nhiên
         $temporaryPassword = (string) rand(100000, 999999);
 
         $user = User::create([
             'name'           => $request->name,
             'phone'          => $request->phone,
-            'room_id'        => $request->room_id, // Nhét người này vào chung phòng
+            'room_id'        => $request->room_id, 
             'role'           => 'tenant',
             'password'       => Hash::make($temporaryPassword),
             'is_first_login' => true,
         ]);
 
-        // 5. Gửi SMS mật khẩu tạm (Giả lập)
-        Log::info("SMS gửi tới SĐT [{$user->phone}]: Tai khoan o ghep tai SmartRent cua ban da duoc tao. Mat khau: {$temporaryPassword}");
+        // 5. Gửi SMS mật khẩu tạm (Ghi log hệ thống)
+        Log::info('--- THÔNG TIN TÀI KHOẢN Ở GHÉP MỚI ---');
+Log::info('SĐT: ' . $user->phone);
+Log::info('Mật khẩu tạm thời: ' . $temporaryPassword);
+Log::info('-----------------------------------------');
 
         return response()->json([
             'success' => true,
             'message' => 'Đã thêm người ở ghép và tạo tài khoản thành công.',
             'data'    => [
                 'tenant'   => $user,
-                'temp_pwd' => $temporaryPassword // Trả về để Admin biết nếu cần
+                'temp_pwd' => $temporaryPassword 
             ]
         ], 201);
     }

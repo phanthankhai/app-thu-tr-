@@ -17,9 +17,11 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        \App\Models\User::factory()->create([
+    'name' => 'Test User',
+    'email' => 'test@example.com',
+    'phone' => '0988123456', // <--- Bắt buộc phải thêm dòng này
+    'role' => 'tenant',      // Kiểm tra xem bạn có cột role không nhé
+]);
     }
 }

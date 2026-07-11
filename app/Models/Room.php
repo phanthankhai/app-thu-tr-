@@ -17,4 +17,10 @@ class Room extends Model
     {
         return $this->hasMany(Bill::class, 'room_id'); // Đảm bảo 'room_id' là khóa ngoại trong bảng bills của bạn
     }
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'room_id', 'id');
+    }
+    
 }

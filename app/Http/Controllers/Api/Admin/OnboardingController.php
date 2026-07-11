@@ -16,7 +16,7 @@ class OnboardingController extends Controller
      */
     public function onboardTenant(Request $request)
     {
-        // 1. Kiểm tra quyền Admin (Chỉ Admin mới được onboard khách)
+        // 1. Kiểm tra quyền Admin
         if (auth('api')->user()->role !== 'admin') {
             return response()->json(['success' => false, 'message' => 'Bạn không có quyền thực hiện hành động này.'], 403);
         }
@@ -40,17 +40,20 @@ class OnboardingController extends Controller
             // 3. Sinh mật khẩu tạm (6 chữ số)
             $temporaryPassword = (string) rand(100000, 999999);
 
+            // Ghi log để bạn dễ dàng debug
+            Log::info('Admin Onboard khách thuê - SĐT: ' . $request->phone . ' | Mật khẩu tạm thời: ' . $temporaryPassword);
+
             // 4. Tạo tài khoản Tenant
             $tenant = User::create([
                 'name'           => $request->name,
                 'phone'          => $request->phone,
                 'room_id'        => $request->room_id,
-                'role'           => 'tenant', // Luôn gắn role là tenant
+                'role'           => 'tenant',
                 'password'       => Hash::make($temporaryPassword),
-                'is_first_login' => true,     // Ép đổi mật khẩu khi login lần đầu
+                'is_first_login' => true,
             ]);
 
-            // 5. Gửi SMS (Log để test)
+            // 5. Gửi SMS (hàm này sẽ tự ghi log tiếp)
             $this->sendTemporaryPasswordViaSMS($tenant->phone, $temporaryPassword);
 
             return response()->json([
@@ -58,7 +61,7 @@ class OnboardingController extends Controller
                 'message' => 'Onboard khách thành công.',
                 'data'    => [
                     'phone'    => $tenant->phone,
-                    'temp_pwd' => $temporaryPassword // Trả về để Admin biết mà nhắn cho khách nếu SMS chưa kịp tích hợp
+                    'temp_pwd' => $temporaryPassword
                 ]
             ], 201);
 
