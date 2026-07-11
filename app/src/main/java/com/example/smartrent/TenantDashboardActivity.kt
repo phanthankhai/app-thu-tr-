@@ -11,6 +11,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.google.gson.Gson
+import java.util.Locale
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,14 +22,16 @@ class TenantDashboardActivity : AppCompatActivity() {
     private lateinit var tvWelcome: TextView
     private lateinit var tvRoomName: TextView
     private lateinit var tvRoomPrice: TextView
-    private lateinit var tvBillAmount: TextView
+    private lateinit var tvBillStatus: TextView
     private lateinit var btnPayMoMo: Button
     private lateinit var btnSplitBill: Button
     private lateinit var btnReportIncident: Button
     private lateinit var btnLogout: ImageView
     
     private var token: String = ""
-    private var currentData: TenantDashboardData? = null
+    private var currentRoom: Room? = null
+    private var currentBill: BillData? = null
+    private var myUserId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +41,7 @@ class TenantDashboardActivity : AppCompatActivity() {
         tvWelcome = findViewById(R.id.tvWelcome)
         tvRoomName = findViewById(R.id.tvRoomName)
         tvRoomPrice = findViewById(R.id.tvRoomPrice)
-        tvBillAmount = findViewById(R.id.tvBillAmount)
+        tvBillStatus = findViewById(R.id.tvBillAmount) // Dùng chung id với tvBillAmount cũ
         btnPayMoMo = findViewById(R.id.btnPayMoMo)
         btnSplitBill = findViewById(R.id.btnSplitBill)
         btnReportIncident = findViewById(R.id.btnReportIncident)
@@ -60,36 +64,35 @@ class TenantDashboardActivity : AppCompatActivity() {
         }
 
         btnSplitBill.setOnClickListener {
-            val data = currentData
-            if (data != null) {
-                val intent = Intent(this, SplitBillActivity::class.java)
-                
-                // Truyền billId sang
-                intent.putExtra("BILL_ID", data.current_bill?.id ?: -1)
+            if (currentBill == null || currentRoom == null) return@setOnClickListener
+            
+            val intent = Intent(this, SplitBillActivity::class.java)
+            
+            intent.putExtra("BILL_ID", currentBill!!.id)
+            intent.putExtra("MY_PAYMENT_STATUS", currentBill!!.my_payment_status)
+            intent.putExtra("TOTAL_RENT", currentRoom!!.price)
+            
+            // Tính toán tiền điện nước dựa trên chỉ số chốt
+            val tienDien = ((currentBill!!.new_electric ?: 0) - (currentBill!!.old_electric ?: 0)) * 3500.0
+            val tienNuoc = ((currentBill!!.new_water ?: 0) - (currentBill!!.old_water ?: 0)) * 15000.0
+            
+            intent.putExtra("TOTAL_ELECTRIC", tienDien)
+            intent.putExtra("TOTAL_WATER", tienNuoc)
 
-                // Truyền tiền phòng và tổng hóa đơn
-                val rent = data.room.price.toDoubleOrNull() ?: 0.0
-                val totalBill = data.current_bill?.total_amount?.toDoubleOrNull() ?: 0.0
-                val utilities = if (totalBill > rent) totalBill - rent else 0.0
-                
-                intent.putExtra("TOTAL_RENT", rent)
-                intent.putExtra("TOTAL_UTILITIES", utilities)
-                
-                // Chuyển đổi danh sách UserData sang Roommate
-                val members = ArrayList<Roommate>()
-                // Thêm bản thân người dùng vào danh sách
-                members.add(Roommate(0, data.user.name, true))
-                
-                // Thêm bạn cùng phòng
-                data.roommates?.forEach { roommate ->
-                    members.add(Roommate(0, roommate.name, true))
-                }
-                
-                intent.putExtra("ROOM_MEMBERS", members)
-                startActivity(intent)
-            } else {
-                Toast.makeText(this, "Vui lòng đợi tải dữ liệu...", Toast.LENGTH_SHORT).show()
+            // Đóng gói danh sách thành viên gửi qua
+            val usersList = currentRoom!!.users ?: emptyList()
+            // Map User model sang Roommate model để tương thích SplitBillActivity
+            val roommateList = ArrayList<Roommate>()
+            for (user in usersList) {
+                roommateList.add(Roommate(user.id, user.name))
             }
+            
+            intent.putExtra("TENANTS_LIST", Gson().toJson(roommateList))
+            
+            // THÊM DÒNG NÀY: Truyền ID của chính mình sang để lọc tiền
+            intent.putExtra("MY_USER_ID", myUserId)
+
+            startActivity(intent)
         }
 
         btnPayMoMo.setOnClickListener {
@@ -104,30 +107,49 @@ class TenantDashboardActivity : AppCompatActivity() {
         RetrofitClient.getInstance(this).getMyDashboard(token).enqueue(object : Callback<TenantDashboardResponse> {
             override fun onResponse(call: Call<TenantDashboardResponse>, response: Response<TenantDashboardResponse>) {
                 if (response.isSuccessful && response.body()?.success == true) {
-                    val data = response.body()?.data
-                    currentData = data
-                    
-                    if (data != null) {
-                        tvWelcome.text = "Xin chào, ${data.user.name}!"
-                        tvRoomName.text = "Phòng: ${data.room.name}"
-                        tvRoomPrice.text = "Giá thuê: ${data.room.price} VNĐ"
+                    val dashboardData = response.body()?.data
 
-                        if (data.current_bill != null) {
-                            tvBillAmount.text = "${data.current_bill.total_amount} VNĐ"
-                            tvBillAmount.setTextColor(ContextCompat.getColor(this@TenantDashboardActivity, android.R.color.holo_red_dark))
+                    if (dashboardData != null) {
+                        currentRoom = dashboardData.room
+                        currentBill = dashboardData.bill
+                        myUserId = dashboardData.my_info.id
+
+                        tvWelcome.text = "Xin chào, ${dashboardData.my_info.name}!"
+                        tvRoomName.text = "Phòng: ${currentRoom?.name}"
+                        tvRoomPrice.text = "Giá thuê: ${String.format(Locale.getDefault(), "%,.0fđ", currentRoom?.price)}"
+
+                        if (currentBill != null) {
+                            // TỰ TÍNH TỔNG TIỀN NGAY TẠI ĐÂY CHO CHẮC CHẮN
+                            val tienDien = ((currentBill!!.new_electric ?: 0) - (currentBill!!.old_electric ?: 0)) * 3500.0
+                            val tienNuoc = ((currentBill!!.new_water ?: 0) - (currentBill!!.old_water ?: 0)) * 15000.0
+                            val tongTien = (currentRoom?.price ?: 0.0) + tienDien + tienNuoc
+
+                            tvBillStatus.text = "Có hóa đơn tháng này: ${String.format(Locale.getDefault(), "%,.0fđ", tongTien)}"
+                            tvBillStatus.setTextColor(ContextCompat.getColor(this@TenantDashboardActivity, android.R.color.holo_red_dark))
+
+                            btnSplitBill.isEnabled = true
                             btnPayMoMo.visibility = View.VISIBLE
                         } else {
-                            tvBillAmount.text = "Đã thanh toán đủ"
-                            tvBillAmount.setTextColor(ContextCompat.getColor(this@TenantDashboardActivity, android.R.color.holo_green_dark))
+                            tvBillStatus.text = "Chưa có hóa đơn"
+                            tvBillStatus.setTextColor(ContextCompat.getColor(this@TenantDashboardActivity, android.R.color.darker_gray))
+
+                            btnSplitBill.isEnabled = false
                             btnPayMoMo.visibility = View.GONE
                         }
                     }
+                } else {
+                    // Bắt lỗi cực mạnh: Hiển thị luôn Server chửi gì lên màn hình
+                    val errorMsg = response.errorBody()?.string() ?: "Lỗi không xác định"
+                    Toast.makeText(this@TenantDashboardActivity, "Lỗi Server: Mã ${response.code()}", Toast.LENGTH_LONG).show()
+                    Log.e("DASHBOARD_ERROR", errorMsg)
+                    tvRoomName.text = "Lỗi kết nối Server"
                 }
             }
 
             override fun onFailure(call: Call<TenantDashboardResponse>, t: Throwable) {
-                Log.e("API_ERROR", "Lỗi: ${t.message}")
-                Toast.makeText(this@TenantDashboardActivity, "Không thể tải dữ liệu", Toast.LENGTH_SHORT).show()
+                Log.e("API_ERROR", "Sập mạng: ${t.message}")
+                Toast.makeText(this@TenantDashboardActivity, "Lỗi mạng hoặc Server đang tắt!", Toast.LENGTH_SHORT).show()
+                tvRoomName.text = "Mất mạng"
             }
         })
     }

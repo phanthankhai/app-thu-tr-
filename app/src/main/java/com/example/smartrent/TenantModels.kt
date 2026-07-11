@@ -7,7 +7,7 @@ data class TenantData(
     val phone: String,
     val email: String?,
     val room_id: Int?,
-    val room: RoomData? // Dùng chung RoomData đã tạo ở phần trước
+    val room: Room? // Dùng chung Room đã tạo ở phần trước
 )
 
 // Data class hứng danh sách trả về

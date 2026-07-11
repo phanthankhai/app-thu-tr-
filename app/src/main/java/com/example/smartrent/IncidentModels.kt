@@ -12,7 +12,7 @@ data class IncidentData(
     val description: String,
     val status: String, // pending, in_progress, resolved
     val created_at: String,
-    val room: RoomData?
+    val room: Room?
 )
 
 data class StatusResponse(

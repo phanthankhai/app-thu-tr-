@@ -70,6 +70,9 @@
         <activity
             android:name=".SplitBillActivity"
             android:exported="false" />
+        <activity
+            android:name=".AdminApprovePaymentActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

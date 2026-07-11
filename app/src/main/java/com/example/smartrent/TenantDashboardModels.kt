@@ -1,32 +1,15 @@
 package com.example.smartrent
 
+// 1. Class tổng hứng dữ liệu API my-dashboard trả về
 data class TenantDashboardResponse(
     val success: Boolean,
+    val message: String?,
     val data: TenantDashboardData?
 )
 
+// 2. Class chứa 3 món Backend gửi
 data class TenantDashboardData(
-    val user: UserData,
-    val room: TenantRoomData,
-    val current_bill: TenantBillData?,
-    val roommates: List<UserData>? // Thêm danh sách người ở chung
-)
-
-data class UserData(
-    val name: String,
-    val phone: String
-)
-
-data class TenantRoomData(
-    val id: Int,
-    val name: String,
-    val price: String,
-    val area: String,
-    val status: String
-)
-
-data class TenantBillData(
-    val id: Int,
-    val total_amount: String,
-    val status: String
+    val my_info: User,
+    val room: Room,
+    val bill: BillData? // Có thể null nếu tháng đó chưa tạo hóa đơn
 )

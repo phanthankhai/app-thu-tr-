@@ -12,7 +12,7 @@ object RetrofitClient {
     // QUAN TRỌNG: Cấu hình địa chỉ IP
     // - Nếu bạn chạy test bằng Máy ảo (Emulator) của Android Studio: Dùng "http://10.0.2.2:8000/api/v1/"
     // - Nếu bạn cắm cáp dùng điện thoại thật: Dùng IPv4 của máy tính, ví dụ: "http://192.168.1.x:8000/api/v1/"
-    private const val BASE_URL = "http://192.168.100.163:8000/api/v1/"
+    const val BASE_URL = "http://127.0.0.1:8081/api/v1/"
     private var retrofit: Retrofit? = null
 
     // Hàm khởi tạo nhận vào Context để có thể xử lý việc đá văng người dùng ra ngoài

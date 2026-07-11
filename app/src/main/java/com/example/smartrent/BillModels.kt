@@ -30,19 +30,21 @@ data class BillDetail(
     val status: String
 )
 
-// Data class đại diện cho 1 hóa đơn (Dùng trong danh sách)
+// Data class đại diện cho 1 hóa đơn (Dùng trong danh sách và dashboard)
 data class BillData(
     val id: Int,
-    val room_id: Int,
-    val billing_month: String,
-    val total_amount: Double,
     val status: String,
-    val room: RoomData?
-)
-
-data class RoomData(
-    val id: Int,
-    val name: String
+    val old_electric: Int?,
+    val new_electric: Int?,
+    val old_water: Int?,
+    val new_water: Int?,
+    
+    // BỔ SUNG LẠI CÁC BIẾN CHO ADMIN (BillAdapter không bị báo đỏ nữa)
+    val room_id: Int?,
+    val billing_month: String?,
+    val total_amount: Double?,
+    val room: Room?, // Để truy xuất được bill.room.name
+    val my_payment_status: String? // Thêm dòng này để hứng trạng thái đóng tiền lẻ của chính mình
 )
 
 // Data class gói danh sách trả về

@@ -17,7 +17,6 @@ data class AuthData(
     val type: String,
     val expires_in: Int
 )
-
 data class User(
     val id: Int,
     val name: String,
@@ -44,7 +43,8 @@ data class Room(
     val status: String,
     val image: String?,
     val contract: ContractData?, // Thông tin hợp đồng hiện tại
-    val tenants: List<TenantData>? // Danh sách thành viên
+    val tenants: List<TenantData>?, // Danh sách thành viên (dạng model cũ)
+    val users: List<User>? // QUAN TRỌNG: Thêm dòng này vào cuối
 )
 
 data class RoomResponse(
@@ -67,6 +67,42 @@ data class AddTenantRequest(
     val name: String,
     val phone: String
 )
+
+data class PaymentResponse(
+    val success: Boolean,
+    val message: String,
+    val data: List<PaymentData>
+)
+
+// Khung chứa thông tin 1 biên lai lẻ
+data class PaymentData(
+    val id: Int,
+    val amount: String, // Trùng khớp với kiểu dữ liệu chuỗi chuỗi JSON thực tế
+    val status: String,
+    val payment_method: String,
+    val user: PaymentUser?,
+    val bill: PaymentBill?
+)
+
+// Thông tin người đóng
+data class PaymentUser(
+    val id: Int,
+    val name: String,
+    val phone: String?
+)
+
+// Thông tin hóa đơn & phòng
+data class PaymentBill(
+    val id: Int,
+    val room: PaymentRoom?
+)
+
+data class PaymentRoom(
+    val id: Int,
+    val name: String
+)
+
+
 
 // 3. Khai báo các đường dẫn API
 interface ApiService {
@@ -190,5 +226,16 @@ interface ApiService {
     fun addCoTenant(
         @Header("Authorization") token: String,
         @Body request: AddTenantRequest
+    ): Call<BaseResponse>
+
+    // Admin lấy danh sách biên lai lẻ đang chờ duyệt tiền
+    @GET("admin/payments/pending")
+    fun getPendingPayments(@Header("Authorization") token: String): Call<PaymentResponse>
+
+    // Admin bấm nút "Xác nhận đã nhận tiền"
+    @POST("admin/payments/{id}/approve")
+    fun approvePayment(
+        @Header("Authorization") token: String,
+        @Path("id") paymentId: Int
     ): Call<BaseResponse>
 }

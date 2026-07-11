@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +35,15 @@ class HomeActivity : AppCompatActivity() {
         val fabAddRoom = findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.fabAddRoom)
         fabAddRoom.setOnClickListener {
             val intent = Intent(this, AddRoomActivity::class.java)
+            startActivity(intent)
+        }
+
+        // 1. Ánh xạ nút bấm từ XML sang Kotlin
+        val btnGoToApprovePayments = findViewById<Button>(R.id.btnGoToApprovePayments)
+
+        // 2. Cài đặt sự kiện: Bấm vào là mở màn hình Duyệt Tiền
+        btnGoToApprovePayments.setOnClickListener {
+            val intent = Intent(this, AdminApprovePaymentActivity::class.java)
             startActivity(intent)
         }
 

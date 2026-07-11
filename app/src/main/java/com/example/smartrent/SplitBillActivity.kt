@@ -1,5 +1,7 @@
 package com.example.smartrent
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -10,6 +12,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,6 +32,10 @@ class SplitBillActivity : AppCompatActivity() {
     private var roomMembers: List<Roommate> = emptyList()
     private var token: String = ""
     private var billId: Int = -1
+    private var myUserId: Int = -1
+    private var myAmountToPay: Double = 0.0
+    private var myPaymentStatus: String? = null
+    private lateinit var btnSubmitPayment: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,17 +46,19 @@ class SplitBillActivity : AppCompatActivity() {
 
         // 1. Nhận dữ liệu từ Intent
         billId = intent.getIntExtra("BILL_ID", -1)
+        myUserId = intent.getIntExtra("MY_USER_ID", -1)
+        myPaymentStatus = intent.getStringExtra("MY_PAYMENT_STATUS")
         totalRent = intent.getDoubleExtra("TOTAL_RENT", 0.0)
-        
-        // Hiện tại dashboard chỉ truyền gộp TOTAL_UTILITIES, tạm thời chia tỷ lệ 70:30 nếu không có data riêng
-        val totalUtils = intent.getDoubleExtra("TOTAL_UTILITIES", 0.0)
-        totalElectric = intent.getDoubleExtra("TOTAL_ELECTRIC", totalUtils * 0.7)
-        totalWater = intent.getDoubleExtra("TOTAL_WATER", totalUtils * 0.3)
+        totalElectric = intent.getDoubleExtra("TOTAL_ELECTRIC", 0.0)
+        totalWater = intent.getDoubleExtra("TOTAL_WATER", 0.0)
         totalService = intent.getDoubleExtra("TOTAL_SERVICE", 0.0)
         
-        @Suppress("DEPRECATION")
-        val receivedMembers = intent.getSerializableExtra("ROOM_MEMBERS") as? ArrayList<Roommate>
-        roomMembers = receivedMembers ?: emptyList()
+        // 2. HỨNG VÀ GIẢI MÃ DANH SÁCH THÀNH VIÊN THẬT
+        val tenantsJson = intent.getStringExtra("TENANTS_LIST")
+        if (!tenantsJson.isNullOrEmpty()) {
+            val type = object : TypeToken<ArrayList<Roommate>>() {}.type
+            roomMembers = Gson().fromJson(tenantsJson, type)
+        }
 
         rvRoommates = findViewById(R.id.rvRoommates)
         tvResult = findViewById(R.id.tvResult)
@@ -62,9 +72,12 @@ class SplitBillActivity : AppCompatActivity() {
 
         val rgPaymentMethod = findViewById<RadioGroup>(R.id.rgPaymentMethod)
         val rbTransfer = findViewById<RadioButton>(R.id.rbTransfer)
-        val btnSubmitPayment = findViewById<Button>(R.id.btnSubmitPayment)
+        btnSubmitPayment = findViewById<Button>(R.id.btnSubmitPayment)
 
         rbTransfer.isEnabled = false
+
+        // Logic hiển thị nút bấm dựa trên trạng thái
+        updateSubmitButtonUI()
 
         btnSubmitPayment.setOnClickListener {
             // Kiểm tra billId trước khi gửi
@@ -75,7 +88,12 @@ class SplitBillActivity : AppCompatActivity() {
 
             val selectedId = rgPaymentMethod.checkedRadioButtonId
             val method = if (selectedId == R.id.rbCash) "cash" else "transfer"
-            val requestBody = mapOf("payment_method" to method)
+            
+            // ĐÓNG GÓI SỐ TIỀN CỦA MÌNH VÀO REQUEST ĐỂ GỬI LÊN SERVER
+            val requestBody = mapOf(
+                "payment_method" to method,
+                "amount" to myAmountToPay.toString() // Backend sẽ hứng biến amount này
+            )
 
             RetrofitClient.getInstance(this).tenantNotifyPayment(token, billId, requestBody)
                 .enqueue(object : Callback<BaseResponse> {
@@ -129,6 +147,17 @@ class SplitBillActivity : AppCompatActivity() {
             
             memberTotal += (eCost + wCost + sCost)
 
+            // LỌC TIỀN CỦA CHÍNH MÌNH: Nếu member này chính là người đang cầm điện thoại
+            if (member.id == myUserId) {
+                myAmountToPay = memberTotal
+                
+                // Chỉ đổi chữ trên nút nếu chưa đóng hoặc chưa được duyệt
+                if (myPaymentStatus != "approved" && myPaymentStatus != "pending") {
+                    val fMyTotal = String.format(Locale.getDefault(), "%,.0fđ", myAmountToPay)
+                    btnSubmitPayment.text = "Xác nhận đã gửi $fMyTotal cho Admin"
+                }
+            }
+
             // Format tiền
             val fRent = String.format(Locale.getDefault(), "%,.0fđ", rentPerPerson)
             val fElec = String.format(Locale.getDefault(), "%,.0fđ", eCost)
@@ -152,5 +181,24 @@ class SplitBillActivity : AppCompatActivity() {
         }
 
         tvResult.text = resultBuilder.toString()
+    }
+
+    private fun updateSubmitButtonUI() {
+        when (myPaymentStatus) {
+            "approved" -> {
+                btnSubmitPayment.text = "✅ Admin đã nhận tiền của bạn!"
+                btnSubmitPayment.isEnabled = false
+                btnSubmitPayment.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#4CAF50"))
+            }
+            "pending" -> {
+                btnSubmitPayment.text = "⏳ Đang chờ Admin duyệt tiền..."
+                btnSubmitPayment.isEnabled = false
+                btnSubmitPayment.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF9800"))
+            }
+            else -> {
+                btnSubmitPayment.isEnabled = true
+                btnSubmitPayment.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#2196F3"))
+            }
+        }
     }
 }

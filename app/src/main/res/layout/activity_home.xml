@@ -30,6 +30,19 @@
 
             </GridLayout>
 
+            <Button
+                android:id="@+id/btnGoToApprovePayments"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="16dp"
+                android:text="Duyệt Thanh Toán Lẻ (Chờ Duyệt)"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:backgroundTint="#FF9800"
+                android:textColor="@android:color/white"
+                app:cornerRadius="12dp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
