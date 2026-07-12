@@ -22,5 +22,10 @@ class Room extends Model
     {
         return $this->hasMany(User::class, 'room_id', 'id');
     }
+
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class);
+    }
     
 }

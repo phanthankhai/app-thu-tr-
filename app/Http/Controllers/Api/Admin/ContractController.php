@@ -124,9 +124,9 @@ class ContractController extends Controller
     }
 
     /**
-     * API Thanh lý hợp đồng
+     * API 1: YÊU CẦU thanh lý hợp đồng (Bắt đầu quy trình)
      */
-    public function terminate($id)
+    public function requestTermination(Request $request, $id)
     {
         $contract = Contract::find($id);
 
@@ -135,25 +135,82 @@ class ContractController extends Controller
         }
 
         if ($contract->status !== 'active') {
-            return response()->json(['success' => false, 'message' => 'Hợp đồng này không ở trạng thái active.'], 400);
+            return response()->json(['success' => false, 'message' => 'Hợp đồng không ở trạng thái đang hoạt động.'], 400);
+        }
+
+        $user = auth('api')->user();
+
+        // Đánh dấu bên nào chủ động gửi yêu cầu
+        if ($user->role === 'admin') {
+            $contract->admin_approved = true;
+        } else {
+            $contract->tenant_approved = true;
+        }
+        
+        $contract->status = 'pending_termination';
+        $contract->save();
+
+        return response()->json([
+            'success' => true, 
+            'message' => 'Đã gửi yêu cầu thanh lý. Đang chờ bên còn lại xác nhận.',
+            'data'    => $contract
+        ], 200);
+    }
+
+    /**
+     * API 2: XÁC NHẬN thanh lý hợp đồng (Chốt kết thúc)
+     */
+    public function confirmTermination($id)
+    {
+        $contract = Contract::find($id);
+
+        if (!$contract) {
+            return response()->json(['success' => false, 'message' => 'Không tìm thấy hợp đồng.'], 404);
+        }
+
+        if ($contract->status !== 'pending_termination') {
+            return response()->json(['success' => false, 'message' => 'Hợp đồng này chưa có yêu cầu thanh lý.'], 400);
+        }
+
+        $user = auth('api')->user();
+
+        // Đánh dấu bên còn lại xác nhận
+        if ($user->role === 'admin') {
+            $contract->admin_approved = true;
+        } else {
+            $contract->tenant_approved = true;
+        }
+
+        // Kiểm tra xem đã đủ 2 bên đồng thuận chưa
+        if (!$contract->admin_approved || !$contract->tenant_approved) {
+            $contract->save();
+            return response()->json(['success' => false, 'message' => 'Vẫn đang chờ bên kia xác nhận.'], 400);
         }
 
         DB::beginTransaction();
         try {
-            $contract->update(['status' => 'expired']);
-            
+            // 1. Đổi trạng thái hợp đồng thành "Đã thanh lý" (terminated)
+            $contract->update(['status' => 'terminated']);
+
+            // 2. Trả lại trạng thái phòng thành "Trống"
             $room = Room::find($contract->room_id);
             if ($room) {
                 $room->update(['status' => 'empty']);
             }
 
+            // 3. Gỡ phòng ra khỏi TẤT CẢ User đang ở phòng này
             User::where('room_id', $contract->room_id)->update(['room_id' => null]);
 
             DB::commit();
-            return response()->json(['success' => true, 'message' => 'Đã kết thúc hợp đồng thành công.'], 200);
+            return response()->json([
+                'success' => true,
+                'message' => 'Cả 2 bên đã xác nhận. Hợp đồng đã thanh lý thành công!',
+                'deposit_to_refund' => $contract->deposit // Báo số tiền cọc cần hoàn
+            ], 200);
 
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Lỗi xác nhận thanh lý: ' . $e->getMessage());
             return response()->json(['success' => false, 'message' => 'Lỗi hệ thống.'], 500);
         }
     }

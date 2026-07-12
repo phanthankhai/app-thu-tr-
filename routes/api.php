@@ -17,7 +17,7 @@ use App\Http\Controllers\Api\Admin\DashboardController;
 // 1. Tuyến đường KHÔNG yêu cầu đăng nhập
 // ==========================================
 Route::prefix('v1/auth')->group(function () {
-    Route::post('login', [AuthController::class, 'login']);
+    Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('register', [AuthController::class, 'register']); // Thêm mới
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('logout', [AuthController::class, 'logout']);
@@ -36,10 +36,12 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
     });
     
-    // Phân quyền Chủ trọ
+    // ==========================================
+    // PHÂN QUYỀN: CHỦ TRỌ (ADMIN)
+    // ==========================================
     Route::prefix('admin')->group(function () {
         Route::post('/tenants/onboard', [OnboardingController::class, 'onboardTenant']);
-        Route::get('rooms/{id}', [App\Http\Controllers\Api\Admin\RoomController::class, 'show']);
+        Route::get('rooms/{id}', [RoomController::class, 'show']);
         
         // Quản lý phòng trọ
         Route::get('/rooms', [RoomController::class, 'index']);          
@@ -48,12 +50,13 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
         Route::delete('/rooms/{id}', [RoomController::class, 'destroy']); 
         Route::post('/rooms/{id}/services', [RoomController::class, 'syncServices']);
         Route::post('/bills/{id}/pay', [BillController::class, 'markAsPaid']);
-        Route::post('/rooms/add-tenant', [\App\Http\Controllers\Api\Admin\TenantController::class, 'addCoTenant']);
+        Route::post('/rooms/add-tenant', [TenantController::class, 'addCoTenant']);
         
-        // Quản lý hợp đồng
+        // Quản lý hợp đồng (Đã cập nhật quy trình thanh lý 2 bước)
         Route::get('/contracts', [ContractController::class, 'index']);
         Route::post('/contracts', [ContractController::class, 'store']);
-        Route::post('/contracts/{id}/terminate', [ContractController::class, 'terminate']);
+        Route::post('/contracts/{id}/request-terminate', [ContractController::class, 'requestTermination']);
+        Route::post('/contracts/{id}/confirm-terminate', [ContractController::class, 'confirmTermination']);
         
         // Quản lý dịch vụ
         Route::get('/services', [ServiceController::class, 'index']);
@@ -65,11 +68,9 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
         Route::post('/invoices', [InvoiceController::class, 'store']);
         Route::post('/invoices/{id}/split', [InvoiceController::class, 'splitBill']);
 
-        // ĐÃ SỬA: Loại bỏ tiền tố admin/ bị lặp để khớp với cấu trúc nhóm cha
+        // Quản lý Thanh toán (Module 5)
         Route::get('/payments/pending', [BillController::class, 'getPendingPayments']);
         Route::post('/payments/{id}/approve', [BillController::class, 'approvePayment']);
-
-        // Quản lý Thanh toán (Module 5)
         Route::post('/invoices/{id}/payments', [PaymentController::class, 'store']);
 
         // Quản lý Báo cáo sự cố (Module 6)
@@ -90,8 +91,11 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
         Route::post('/bills', [BillController::class, 'store']);
     });
 
+    // ==========================================
+    // PHÂN QUYỀN: KHÁCH THUÊ (TENANT)
+    // ==========================================
     Route::middleware(['auth:api', 'role:tenant'])->prefix('tenant')->group(function () {
-        Route::post('/bills/{id}/notify-payment', [\App\Http\Controllers\Api\Admin\BillController::class, 'tenantNotifyPayment']);
+        Route::post('/bills/{id}/notify-payment', [BillController::class, 'tenantNotifyPayment']);
     
         // 1. Lấy thông tin phòng và hóa đơn của chính mình
         Route::get('/my-dashboard', [TenantController::class, 'getMyDashboard']);
@@ -101,5 +105,9 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
         
         // 3. Gửi yêu cầu hỗ trợ/báo cáo sự cố
         Route::post('/report-incident', [IncidentController::class, 'store']);
+
+        // 4. Thao tác với hợp đồng (Quy trình thanh lý 2 bước)
+        Route::post('/contracts/{id}/request-terminate', [ContractController::class, 'requestTermination']);
+        Route::post('/contracts/{id}/confirm-terminate', [ContractController::class, 'confirmTermination']);
     });
 });
