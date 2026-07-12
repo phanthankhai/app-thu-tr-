@@ -116,12 +116,15 @@ class RoomDetailActivity : AppCompatActivity() {
                     val room = response.body()!!.data
                     displayRoomInfo(room)
                 } else {
-                    Toast.makeText(this@RoomDetailActivity, "Không thể tải chi tiết phòng!", Toast.LENGTH_SHORT).show()
+                    // SỬA CHỖ NÀY: In ra lỗi thật sự từ server
+                    val errorMsg = response.errorBody()?.string()
+                    android.util.Log.e("API_ERROR", "Lỗi trả về: $errorMsg")
+                    Toast.makeText(this@RoomDetailActivity, "Không tìm thấy phòng: $errorMsg", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<RoomDetailResponse>, t: Throwable) {
-                Toast.makeText(this@RoomDetailActivity, "Lỗi kết nối mạng: ${t.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@RoomDetailActivity, "Lỗi mạng: ${t.message}", Toast.LENGTH_LONG).show()
             }
         })
     }
@@ -173,31 +176,25 @@ class RoomDetailActivity : AppCompatActivity() {
             }
         }
 
-        // Thông tin hợp đồng
-        if (room.contract != null) {
-            tvContractInfo.text = """
-                Người đại diện: ${room.contract.tenant_name}
-                Số điện thoại: ${room.contract.tenant_phone}
-                Tiền cọc: ${room.contract.deposit} đ
-                Ngày bắt đầu: ${room.contract.start_date}
-            """.trimIndent()
+        // THÔNG TIN HỢP ĐỒNG (Dùng contracts)
+        if (!room.contracts.isNullOrEmpty()) {
+            val contract = room.contracts[0]
+            tvContractInfo.text = "Người đại diện: ${contract.tenant_name}\nSĐT: ${contract.tenant_phone}"
         } else {
             tvContractInfo.text = "Chưa có hợp đồng"
         }
 
-        // Danh sách thành viên
+        // THÀNH VIÊN (Dùng users)
         llTenantsContainer.removeAllViews()
-        if (!room.tenants.isNullOrEmpty()) {
-            for (tenant in room.tenants) {
+        if (!room.users.isNullOrEmpty()) {
+            for (user in room.users) {
                 val tvMember = TextView(this)
-                tvMember.text = "• ${tenant.name} - ${tenant.phone}"
-                tvMember.setPadding(0, 4, 0, 4)
-                tvMember.textSize = 15f
+                tvMember.text = "• ${user.name} - ${user.phone}"
                 llTenantsContainer.addView(tvMember)
             }
         } else {
             val tvNoMember = TextView(this)
-            tvNoMember.text = "(Chưa có thành viên khác)"
+            tvNoMember.text = "(Chưa có thành viên)"
             tvNoMember.setTextColor(Color.GRAY)
             tvNoMember.textSize = 14f
             llTenantsContainer.addView(tvNoMember)

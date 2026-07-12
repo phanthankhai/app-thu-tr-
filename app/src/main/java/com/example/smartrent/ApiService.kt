@@ -1,5 +1,6 @@
 package com.example.smartrent
 
+import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -35,16 +36,23 @@ data class LoginResponse(
     val data: LoginData
 )
 
+data class Tenant(
+    val id: Int,
+    val name: String,
+    val phone: String,
+    val email: String?
+)
 data class Room(
     val id: Int,
     val name: String,
-    val price: Double,
-    val area: Double,
+    val price: String, // Trong logcat là "3500000.00" (dạng String)
+    val area: Int,
     val status: String,
     val image: String?,
-    val contract: ContractData?, // Thông tin hợp đồng hiện tại
-    val tenants: List<TenantData>?, // Danh sách thành viên (dạng model cũ)
-    val users: List<User>? // QUAN TRỌNG: Thêm dòng này vào cuối
+
+    // CẬP NHẬT ĐÚNG THEO LOGCAT
+    val contracts: List<Contract>?, // Thay vì contract (object đơn)
+    val users: List<Tenant>?        // Thay vì tenants (List cũ)
 )
 
 data class RoomResponse(
@@ -100,6 +108,16 @@ data class PaymentBill(
 data class PaymentRoom(
     val id: Int,
     val name: String
+)
+
+data class Contract(
+    val id: Int,
+    val room_id: Int,
+    val tenant_name: String,
+    val tenant_phone: String,
+    val deposit: String,
+    val status: String,
+    val start_date: String
 )
 
 
@@ -238,4 +256,18 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("id") paymentId: Int
     ): Call<BaseResponse>
+
+    // Admin yêu cầu thanh lý hợp đồng
+    @POST("admin/contracts/{id}/request-terminate")
+    fun requestTerminateContract(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): Call<JsonObject>
+
+    // Khách thuê xác nhận thanh lý hợp đồng
+    @POST("tenant/contracts/{id}/confirm-terminate")
+    fun confirmTerminateContract(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): Call<JsonObject>
 }

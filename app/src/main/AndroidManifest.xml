@@ -73,6 +73,9 @@
         <activity
             android:name=".AdminApprovePaymentActivity"
             android:exported="false" />
+        <activity
+            android:name=".ContractDetailActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

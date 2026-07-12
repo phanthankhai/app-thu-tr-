@@ -34,7 +34,8 @@ class RoomAdapter(
 
         // Định dạng giá tiền có dấu chấm phân cách (VD: 2.000.000)
         val formatter = DecimalFormat("#,###")
-        val formattedPrice = formatter.format(currentRoom.price)
+        val priceDouble = currentRoom.price.toDoubleOrNull() ?: 0.0
+        val formattedPrice = formatter.format(priceDouble)
         holder.tvPrice.text = "Giá: $formattedPrice đ"
 
         // Dịch trạng thái tiếng Anh từ Database sang tiếng Việt

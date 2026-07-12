@@ -70,7 +70,9 @@ class TenantDashboardActivity : AppCompatActivity() {
             
             intent.putExtra("BILL_ID", currentBill!!.id)
             intent.putExtra("MY_PAYMENT_STATUS", currentBill!!.my_payment_status)
-            intent.putExtra("TOTAL_RENT", currentRoom!!.price)
+            
+            val roomPrice = currentRoom!!.price.toDoubleOrNull() ?: 0.0
+            intent.putExtra("TOTAL_RENT", roomPrice)
             
             // Tính toán tiền điện nước dựa trên chỉ số chốt
             val tienDien = ((currentBill!!.new_electric ?: 0) - (currentBill!!.old_electric ?: 0)) * 3500.0
@@ -116,13 +118,27 @@ class TenantDashboardActivity : AppCompatActivity() {
 
                         tvWelcome.text = "Xin chào, ${dashboardData.my_info.name}!"
                         tvRoomName.text = "Phòng: ${currentRoom?.name}"
-                        tvRoomPrice.text = "Giá thuê: ${String.format(Locale.getDefault(), "%,.0fđ", currentRoom?.price)}"
+                        tvRoomName.setOnClickListener {
+                            val contract = currentRoom?.contracts?.getOrNull(0)
+                            if (contract != null) {
+                                val intent = Intent(this@TenantDashboardActivity, ContractDetailActivity::class.java).apply {
+                                    putExtra("CONTRACT_ID", contract.id)
+                                    putExtra("USER_ROLE", "tenant")
+                                    putExtra("CONTRACT_STATUS", contract.status)
+                                }
+                                startActivity(intent)
+                            } else {
+                                Toast.makeText(this@TenantDashboardActivity, "Không tìm thấy thông tin hợp đồng!", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        val roomPrice = currentRoom?.price?.toDoubleOrNull() ?: 0.0
+                        tvRoomPrice.text = "Giá thuê: ${String.format(Locale.getDefault(), "%,.0fđ", roomPrice)}"
 
                         if (currentBill != null) {
                             // TỰ TÍNH TỔNG TIỀN NGAY TẠI ĐÂY CHO CHẮC CHẮN
                             val tienDien = ((currentBill!!.new_electric ?: 0) - (currentBill!!.old_electric ?: 0)) * 3500.0
                             val tienNuoc = ((currentBill!!.new_water ?: 0) - (currentBill!!.old_water ?: 0)) * 15000.0
-                            val tongTien = (currentRoom?.price ?: 0.0) + tienDien + tienNuoc
+                            val tongTien = roomPrice + tienDien + tienNuoc
 
                             tvBillStatus.text = "Có hóa đơn tháng này: ${String.format(Locale.getDefault(), "%,.0fđ", tongTien)}"
                             tvBillStatus.setTextColor(ContextCompat.getColor(this@TenantDashboardActivity, android.R.color.holo_red_dark))
