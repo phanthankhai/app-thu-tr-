@@ -27,5 +27,8 @@ data class ContractData(
     val deposit: Double,
     val start_date: String,
     val end_date: String?,
-    val status: String
+    val status: String,
+    // ĐỔI TỪ BOOLEAN SANG INT Ở ĐÂY:
+    val tenant_approved: Int,
+    val admin_approved: Int
 )

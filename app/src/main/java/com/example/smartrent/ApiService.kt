@@ -1,6 +1,7 @@
 package com.example.smartrent
 
 import com.google.gson.JsonObject
+import com.google.gson.annotations.SerializedName
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -111,13 +112,17 @@ data class PaymentRoom(
 )
 
 data class Contract(
-    val id: Int,
-    val room_id: Int,
-    val tenant_name: String,
-    val tenant_phone: String,
-    val deposit: String,
-    val status: String,
-    val start_date: String
+    @SerializedName("id") val id: Int,
+    @SerializedName("room_id") val room_id: Int,
+    @SerializedName("tenant_name") val tenant_name: String,
+    @SerializedName("tenant_phone") val tenant_phone: String,
+    @SerializedName("tenant_cccd") val tenant_cccd: String?,
+    @SerializedName("deposit") val deposit: String,
+    @SerializedName("status") val status: String,
+    @SerializedName("start_date") val start_date: String,
+    @SerializedName("end_date") val end_date: String?,
+    @SerializedName("tenant_approved") val tenant_approved: Int,
+    @SerializedName("admin_approved") val admin_approved: Int
 )
 
 

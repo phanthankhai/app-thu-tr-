@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import java.util.Locale
@@ -23,6 +24,7 @@ class TenantDashboardActivity : AppCompatActivity() {
     private lateinit var tvRoomName: TextView
     private lateinit var tvRoomPrice: TextView
     private lateinit var tvBillStatus: TextView
+    private lateinit var cardRoomInfo: CardView
     private lateinit var btnPayMoMo: Button
     private lateinit var btnSplitBill: Button
     private lateinit var btnReportIncident: Button
@@ -42,6 +44,7 @@ class TenantDashboardActivity : AppCompatActivity() {
         tvRoomName = findViewById(R.id.tvRoomName)
         tvRoomPrice = findViewById(R.id.tvRoomPrice)
         tvBillStatus = findViewById(R.id.tvBillAmount) // Dùng chung id với tvBillAmount cũ
+        cardRoomInfo = findViewById(R.id.cardRoomInfo)
         btnPayMoMo = findViewById(R.id.btnPayMoMo)
         btnSplitBill = findViewById(R.id.btnSplitBill)
         btnReportIncident = findViewById(R.id.btnReportIncident)
@@ -99,6 +102,17 @@ class TenantDashboardActivity : AppCompatActivity() {
 
         btnPayMoMo.setOnClickListener {
             Toast.makeText(this, "Đang mở ứng dụng thanh toán...", Toast.LENGTH_SHORT).show()
+        }
+
+        cardRoomInfo.setOnClickListener {
+            if (currentRoom != null) {
+                val intent = Intent(this, RoomDetailActivity::class.java).apply {
+                    putExtra("ROOM_ID", currentRoom!!.id)
+                    putExtra("ROOM_NAME", currentRoom!!.name)
+                    putExtra("USER_ROLE", "tenant")
+                }
+                startActivity(intent)
+            }
         }
 
         // 4. Gọi API tải dữ liệu
