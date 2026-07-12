@@ -160,7 +160,7 @@ class ContractController extends Controller
     /**
      * API 2: XÁC NHẬN thanh lý hợp đồng (Chốt kết thúc)
      */
-    public function confirmTermination($id)
+    public function confirmTermination(int $id)
     {
         $contract = Contract::find($id);
 
@@ -173,6 +173,14 @@ class ContractController extends Controller
         }
 
         $user = auth('api')->user();
+
+        // Kiểm tra xem đã xác nhận trước đó chưa
+        if ($user->role === 'admin' && $contract->admin_approved) {
+            return response()->json(['success' => false, 'message' => 'Bạn đã xác nhận rồi.'], 400);
+        }
+        if ($user->role === 'tenant' && $contract->tenant_approved) {
+            return response()->json(['success' => false, 'message' => 'Bạn đã xác nhận rồi.'], 400);
+        }
 
         // Đánh dấu bên còn lại xác nhận
         if ($user->role === 'admin') {
@@ -187,6 +195,7 @@ class ContractController extends Controller
             return response()->json(['success' => false, 'message' => 'Vẫn đang chờ bên kia xác nhận.'], 400);
         }
 
+        // BẮT ĐẦU GIAO DỊCH DỮ LIỆU
         DB::beginTransaction();
         try {
             // 1. Đổi trạng thái hợp đồng thành "Đã thanh lý" (terminated)
@@ -202,10 +211,11 @@ class ContractController extends Controller
             User::where('room_id', $contract->room_id)->update(['room_id' => null]);
 
             DB::commit();
+            
             return response()->json([
                 'success' => true,
                 'message' => 'Cả 2 bên đã xác nhận. Hợp đồng đã thanh lý thành công!',
-                'deposit_to_refund' => $contract->deposit // Báo số tiền cọc cần hoàn
+                'deposit_to_refund' => $contract->deposit
             ], 200);
 
         } catch (\Exception $e) {

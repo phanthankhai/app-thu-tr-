@@ -131,23 +131,27 @@ class TenantController extends Controller
             ], 400);
         }
 
-        // 2. Lấy thông tin phòng và kèm theo TẤT CẢ users đang ở chung phòng
-        $room = \App\Models\Room::with(['users' => function($query) {
-            $query->where('role', 'tenant'); 
-        }])->find($user->room_id);
+        // 2. Lấy thông tin phòng, danh sách thành viên VÀ hợp đồng đang hiệu lực
+        $room = \App\Models\Room::with([
+            'users' => function($query) {
+                $query->where('role', 'tenant'); 
+            },
+            'contracts' => function($query) {
+                // Chỉ lấy hợp đồng đang active hoặc pending để check thanh lý
+                $query->whereNull('end_date')
+                      ->orWhere('status', 'pending_termination');
+            }
+        ])->find($user->room_id);
 
         // 3. Lấy hóa đơn hiện tại của phòng
         $bill = \App\Models\Bill::where('room_id', $user->room_id)
                                 ->whereIn('status', ['unpaid', 'pending'])
                                 ->first();
 
-        // ĐÃ CẬP NHẬT: Kiểm tra riêng lịch sử nộp tiền lẻ của user này cho hóa đơn hiện tại
         if ($bill) {
             $payment = \App\Models\Payment::where('bill_id', $bill->id)
                                           ->where('user_id', $user->id)
                                           ->first();
-            
-            // Gắn thuộc tính ảo báo trạng thái nộp tiền lẻ của cơ thể user này
             $bill->my_payment_status = $payment ? $payment->status : 'not_paid_yet';
         }
 
