@@ -84,6 +84,10 @@ class TenantDashboardActivity : AppCompatActivity() {
             intent.putExtra("TOTAL_ELECTRIC", tienDien)
             intent.putExtra("TOTAL_WATER", tienNuoc)
 
+            // THÊM DÒNG NÀY ĐỂ GỬI TIỀN DỊCH VỤ SANG:
+            val tienDichVu = currentBill!!.services_cost ?: 0.0
+            intent.putExtra("TOTAL_SERVICE", tienDichVu)
+
             // Đóng gói danh sách thành viên gửi qua
             val usersList = currentRoom!!.users ?: emptyList()
             // Map User model sang Roommate model để tương thích SplitBillActivity
@@ -152,7 +156,12 @@ class TenantDashboardActivity : AppCompatActivity() {
                             // TỰ TÍNH TỔNG TIỀN NGAY TẠI ĐÂY CHO CHẮC CHẮN
                             val tienDien = ((currentBill!!.new_electric ?: 0) - (currentBill!!.old_electric ?: 0)) * 3500.0
                             val tienNuoc = ((currentBill!!.new_water ?: 0) - (currentBill!!.old_water ?: 0)) * 15000.0
-                            val tongTien = roomPrice + tienDien + tienNuoc
+                            
+                            // 1. LẤY TIỀN DỊCH VỤ TỪ BACKEND TRẢ VỀ
+                            val tienDichVu = currentBill!!.services_cost ?: 0.0
+
+                            // 2. CỘNG VÀO TỔNG TIỀN (Phòng + Điện + Nước + Dịch Vụ)
+                            val tongTien = roomPrice + tienDien + tienNuoc + tienDichVu
 
                             tvBillStatus.text = "Có hóa đơn tháng này: ${String.format(Locale.getDefault(), "%,.0fđ", tongTien)}"
                             tvBillStatus.setTextColor(ContextCompat.getColor(this@TenantDashboardActivity, android.R.color.holo_red_dark))

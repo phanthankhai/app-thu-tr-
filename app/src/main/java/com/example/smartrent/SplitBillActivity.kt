@@ -196,6 +196,7 @@ class SplitBillActivity : AppCompatActivity() {
                 btnSubmitPayment.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF9800"))
             }
             else -> {
+                btnSubmitPayment.text = "GỬI THÔNG BÁO THANH TOÁN"
                 btnSubmitPayment.isEnabled = true
                 btnSubmitPayment.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#2196F3"))
             }

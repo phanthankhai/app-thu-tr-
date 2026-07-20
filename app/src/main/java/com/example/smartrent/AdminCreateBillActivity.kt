@@ -1,6 +1,7 @@
 package com.example.smartrent
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -84,7 +85,10 @@ class AdminCreateBillActivity : AppCompatActivity() {
                     override fun onResponse(call: Call<BillResponse>, response: Response<BillResponse>) {
                         btnSubmitBill.isEnabled = true
                         if (response.isSuccessful && response.body()?.success == true) {
-                            val total = response.body()?.data?.total_bill ?: 0.0
+                            val data = response.body()?.data
+                            Log.d("DEBUG_FE", "Tiền dịch vụ nhận được: " + data?.services_cost)
+                            
+                            val total = data?.total_bill ?: 0.0
                             val formattedTotal = String.format(Locale.getDefault(), "%,.0f VNĐ", total)
                             
                             Toast.makeText(this@AdminCreateBillActivity, "Tạo thành công! Tổng bill: $formattedTotal", Toast.LENGTH_LONG).show()
